@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="Watch Store">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3AA1A0"/>
+      <stop offset="1" stop-color="#2a8281"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="104" height="104" rx="24" fill="url(#g)"/>
+  <circle cx="60" cy="60" r="26" fill="#ffffff" opacity="0.95"/>
+  <circle cx="60" cy="60" r="22" fill="#E6F2F1"/>
+  <path d="M60 45v16l10 6" fill="none" stroke="#3AA1A0" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="60" y="97" text-anchor="middle" font-family="Roboto, Arial, sans-serif" font-size="14" fill="#ffffff" font-weight="700">WATCH</text>
+</svg>

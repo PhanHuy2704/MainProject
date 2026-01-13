@@ -1,0 +1,9 @@
+{
+  "name": "cloudinary-seed",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "cloudinary": "^2.6.0",
+    "mysql2": "^3.11.5"
+  }
+}

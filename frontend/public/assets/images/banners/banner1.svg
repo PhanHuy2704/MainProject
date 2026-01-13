@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="700" viewBox="0 0 1920 700">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#000000"/>
+      <stop offset="60%" stop-color="#070707"/>
+      <stop offset="100%" stop-color="#0f0f0f"/>
+    </linearGradient>
+
+    <radialGradient id="goldGlow" cx="72%" cy="50%" r="45%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.5"/>
+      <stop offset="45%" stop-color="#d97706" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e5e7eb"/>
+      <stop offset="50%" stop-color="#9ca3af"/>
+      <stop offset="100%" stop-color="#f3f4f6"/>
+    </linearGradient>
+
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="20" stdDeviation="22" flood-color="#000" flood-opacity="0.65"/>
+    </filter>
+  </defs>
+
+  <rect width="1920" height="700" fill="url(#bg)"/>
+  <rect width="1920" height="700" fill="url(#goldGlow)"/>
+
+  <!-- Wristwatch -->
+  <g transform="translate(1240,150) rotate(-18)" filter="url(#shadow)">
+    <!-- strap top -->
+    <rect x="200" y="0" width="180" height="160" rx="40" fill="#1f2937"/>
+    <!-- strap bottom -->
+    <rect x="200" y="360" width="180" height="200" rx="44" fill="#020617"/>
+
+    <!-- case -->
+    <circle cx="290" cy="260" r="140" fill="url(#metal)"/>
+    <circle cx="290" cy="260" r="126" fill="#020617"/>
+
+    <!-- ticks -->
+    <g stroke="#e5e7eb" stroke-width="4" opacity="0.8" transform="translate(290,260)">
+      <line x1="0" y1="-100" x2="0" y2="-120"/>
+      <line x1="0" y1="100" x2="0" y2="120"/>
+      <line x1="100" y1="0" x2="120" y2="0"/>
+      <line x1="-100" y1="0" x2="-120" y2="0"/>
+    </g>
+
+    <!-- hands -->
+    <g transform="translate(290,260)">
+      <rect x="-6" y="-80" width="12" height="90" rx="6" fill="#e5e7eb"/>
+      <rect x="-3" y="-120" width="6" height="130" rx="3" fill="#fbbf24"/>
+      <circle r="10" fill="#f59e0b"/>
+    </g>
+
+    <!-- crown -->
+    <rect x="430" y="240" width="26" height="44" rx="6" fill="url(#metal)"/>
+  </g>
+</svg>
