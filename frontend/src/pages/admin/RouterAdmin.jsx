@@ -290,17 +290,17 @@ function AdminTopHeader() {
 }
 
 function AdminShell() {
-	return (
-		<Layout style={{ minHeight: "100vh", transition: "none" }}>
-			<AdminSidebar />
-			<Layout style={{ marginLeft: SIDEBAR_WIDTH, transition: "none" }}>
-				<AdminTopHeader />
-				<Content className="p-6 bg-slate-50">
-					<Outlet />
-				</Content>
-			</Layout>
-		</Layout>
-	);
+       return (
+	       <Layout style={{ minHeight: "100vh", transition: "none", background: "#0f172a" }}>
+		       <AdminSidebar />
+		       <Layout style={{ marginLeft: SIDEBAR_WIDTH, transition: "none", background: "#0f172a" }}>
+			       <AdminTopHeader />
+			       <Content className="p-6 bg-slate-900" style={{ background: "#0f172a" }}>
+				       <Outlet />
+			       </Content>
+		       </Layout>
+	       </Layout>
+       );
 }
 
 export default function RouterAdmin() {

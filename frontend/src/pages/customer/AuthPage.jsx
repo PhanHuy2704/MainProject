@@ -17,8 +17,26 @@ function Auth({ onLoginSuccess }) {
 
     if (!err?.response) {
       msgApi.error(
-        "Không kết nối được backend. Kiểm tra backend đang chạy (http://localhost:8080) và thử lại."
+        "Không thể kết nối máy chủ. Vui lòng kiểm tra backend (http://localhost:8080) và thử lại."
       );
+      return;
+    }
+
+    // Ưu tiên các lỗi phổ biến
+    if (status === 401) {
+      msgApi.error("Sai email hoặc mật khẩu.");
+      return;
+    }
+    if (status === 404) {
+      msgApi.error("Không tìm thấy tài khoản với email này.");
+      return;
+    }
+    if (status === 409) {
+      msgApi.error("Email đã tồn tại. Vui lòng dùng email khác.");
+      return;
+    }
+    if (status === 400 && typeof data === "object" && data?.message?.toLowerCase().includes("email")) {
+      msgApi.error("Email không hợp lệ hoặc đã được sử dụng.");
       return;
     }
 

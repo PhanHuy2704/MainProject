@@ -274,20 +274,6 @@ function CustomerFooter() {
           </div>
         </div>
       </div>
-
-      <div className="bg-[#020A2F] py-4">
-        <div className="container mx-auto px-4 flex flex-wrap justify-between items-center">
-          <Text className="text-white/80 text-sm">© {new Date().getFullYear()} Watch Store.</Text>
-          <div className="flex flex-wrap mt-2 md:mt-0">
-            <Link to="/about" className="text-white/80 hover:text-white text-sm mr-4 hover:no-underline">
-              Giới thiệu
-            </Link>
-            <Link to="/contact" className="text-white/80 hover:text-white text-sm hover:no-underline">
-              Liên hệ
-            </Link>
-          </div>
-        </div>
-      </div>
     </AntFooter>
   );
 }

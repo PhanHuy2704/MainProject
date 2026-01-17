@@ -6,7 +6,7 @@ import {
   ClockCircleOutlined,
   SafetyCertificateOutlined,
   TagOutlined,
-  TrophyOutlined,
+  TruckOutlined,
 } from "@ant-design/icons";
 
 const { Title, Text, Paragraph } = Typography;
@@ -99,7 +99,7 @@ const HomePageCustomer = () => {
             </Col>
             <Col xs={24} sm={12} md={6}>
               <div className="p-4">
-                <TrophyOutlined className="text-4xl text-blue-600 mb-3" />
+                <TruckOutlined className="text-4xl text-blue-600 mb-3" />
                 <Title level={4}>Giao Hàng Nhanh Chóng</Title>
                 <Text type="secondary">Hỗ trợ giao hàng nhanh chóng và đúng hẹn trên toàn quốc</Text>
               </div>

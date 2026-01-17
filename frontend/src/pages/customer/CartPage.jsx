@@ -1,33 +1,14 @@
+
 import React from "react";
 import { Button, Card, Divider, Empty, Input, List, Space, Tag, Typography, message } from "antd";
 import { Link } from "react-router-dom";
 import { DiscountService } from "../../service/DiscountService";
 import { useCart } from "../../hooks/customer/useCart";
-
-const getCategoryLabel = (category) => {
-  const map = {
-    mechanical: "Đồng hồ cơ",
-    smart: "Đồng hồ thông minh",
-    sport: "Đồng hồ thể thao",
-    classic: "Đồng hồ cổ điển",
-  };
-  return map[category] || category || "-";
-};
+import { formatVnd } from "../../utils/formatters";
 
 
 const { Title, Text } = Typography;
 
-const formatVnd = (value) => {
-  try {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-      maximumFractionDigits: 0,
-    }).format(value);
-  } catch {
-    return `${value} VND`;
-  }
-};
 
 export default function Cart() {
   const {
@@ -39,30 +20,12 @@ export default function Cart() {
     setCoupon: setAppliedCoupon,
     clearCoupon: clearAppliedCoupon,
   } = useCart();
+
   const { itemCount, total } = totals;
+  const { discount, displayDiscount, grandTotal } = useCart();
   const fallbackImage = "/assets/images/logo.svg";
 
   const [couponInput, setCouponInput] = React.useState("");
-
-  const hasCoupon = Boolean(appliedCoupon?.code);
-  const computeDiscountAmount = React.useCallback(() => {
-    if (!appliedCoupon?.code) return 0;
-    const type = String(appliedCoupon?.type || "").toUpperCase();
-    const rawValue = appliedCoupon?.value;
-    const valueNum = Number(rawValue);
-    if (!Number.isFinite(valueNum) || valueNum <= 0) return 0;
-    if (type === "FIX") {
-      return Math.min(Math.max(0, valueNum), total);
-    }
-    if (type === "PERCENT") {
-      return Math.min(Math.max(0, Math.round((total * valueNum) / 100)), total);
-    }
-    return 0;
-  }, [appliedCoupon, total]);
-
-  const discount = hasCoupon ? computeDiscountAmount() : 0;
-  const displayDiscount = hasCoupon ? discount : 0;
-  const grandTotal = Math.max(0, total - discount);
 
   const onRemoveItem = (id) => {
     removeItem(id);
@@ -230,9 +193,7 @@ export default function Cart() {
                         }
                         description={
                           <Space direction="vertical" size={2}>
-                            {item.category ? (
-                              <Text type="secondary">Danh mục: {getCategoryLabel(item.category)}</Text>
-                            ) : null}
+                            
                             {item.brand ? <Text type="secondary">Hãng: {item.brand}</Text> : null}
                             <Text type="secondary">
                               Đơn giá: {formatVnd(item.price)}

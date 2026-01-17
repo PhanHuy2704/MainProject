@@ -19,6 +19,7 @@ function readCartSnapshot() {
 	return { items, coupon };
 }
 
+
 export function useCart() {
 	const [{ items, coupon }, setSnapshot] = React.useState(() => readCartSnapshot());
 
@@ -44,6 +45,26 @@ export function useCart() {
 	}, [reload]);
 
 	const totals = React.useMemo(() => getCartTotals(items), [items]);
+	const { total } = totals;
+
+	// Discount logic moved from CartPage.jsx
+	const hasCoupon = Boolean(coupon?.code);
+	const discount = React.useMemo(() => {
+		if (!hasCoupon) return 0;
+		const type = String(coupon?.type || "").toUpperCase();
+		const rawValue = coupon?.value;
+		const valueNum = Number(rawValue);
+		if (!Number.isFinite(valueNum) || valueNum <= 0) return 0;
+		if (type === "FIX") {
+			return Math.min(Math.max(0, valueNum), total);
+		}
+		if (type === "PERCENT") {
+			return Math.min(Math.max(0, Math.round((total * valueNum) / 100)), total);
+		}
+		return 0;
+	}, [coupon, total, hasCoupon]);
+	const displayDiscount = hasCoupon ? discount : 0;
+	const grandTotal = Math.max(0, total - discount);
 
 	const addToCart = React.useCallback(
 		(product, quantity = 1) => {
@@ -88,6 +109,9 @@ export function useCart() {
 		items,
 		coupon,
 		totals,
+		discount,
+		displayDiscount,
+		grandTotal,
 		addToCart,
 		updateQuantity,
 		removeItem,

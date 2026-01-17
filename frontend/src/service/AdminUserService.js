@@ -10,6 +10,12 @@ async function getById(id) {
 	return res.data;
 }
 
+
+async function update(id, data) {
+	const res = await http.put(`/api/admin/users/${id}`, data);
+	return res.data;
+}
+
 async function remove(id) {
 	await http.delete(`/api/admin/users/${id}`);
 	return true;
@@ -18,5 +24,6 @@ async function remove(id) {
 export const AdminUserService = {
 	getAll,
 	getById,
+	update,
 	remove,
 };

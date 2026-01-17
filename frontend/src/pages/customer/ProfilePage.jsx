@@ -272,18 +272,10 @@ export default function ProfilePage() {
 
 	return (
 		<div className="min-h-full">
-			<Breadcrumb className="container mx-auto px-4 py-4">
-				<Breadcrumb.Item>
-					<Link to="/" className="hover:text-blue-800">
-						<HomeOutlined className="mr-1" />
-						Trang chủ
-					</Link>
-				</Breadcrumb.Item>
-				<Breadcrumb.Item>Tài khoản của tôi</Breadcrumb.Item>
-			</Breadcrumb>
+			
 
 			<div className="container mx-auto px-4 py-6">
-				<Title level={3} className="mb-6">
+				<Title level={3} className="mb-6" style={{ paddingBottom: '20px' }}>
 					Tài khoản của tôi
 				</Title>
 

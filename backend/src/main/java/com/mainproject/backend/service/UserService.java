@@ -1,11 +1,11 @@
+
 package com.mainproject.backend.service;
 
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.mainproject.backend.dto.UserDTO;
 import com.mainproject.backend.dto.request.ChangePasswordRequest;
@@ -43,6 +43,18 @@ public class UserService {
 		}
 		User user = userRepository.findByEmailIgnoreCase(email)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found: " + email));
+		if (req.getName() != null) user.setName(req.getName());
+		if (req.getPhone() != null) user.setPhone(req.getPhone());
+		if (req.getGender() != null) user.setGender(req.getGender());
+		if (req.getAddress() != null) user.setAddress(req.getAddress());
+		return toDTO(userRepository.save(user));
+	}
+	public UserDTO updateById(Long id, UserUpdateRequest req) {
+		if (req == null) {
+			throw new BadRequestException("Request body is required");
+		}
+		User user = userRepository.findById(id)
+						.orElseThrow(() -> new ResourceNotFoundException("User not found: " + id));
 		if (req.getName() != null) user.setName(req.getName());
 		if (req.getPhone() != null) user.setPhone(req.getPhone());
 		if (req.getGender() != null) user.setGender(req.getGender());

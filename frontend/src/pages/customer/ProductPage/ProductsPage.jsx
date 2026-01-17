@@ -124,7 +124,8 @@ const ProductsPage = () => {
         sorted.sort((a, b) => getProductRating(b) - getProductRating(a));
         break;
       default:
-        // featured: keep original order
+        // featured: sort by id descending
+        sorted.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
         break;
     }
 
@@ -152,26 +153,13 @@ const ProductsPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <Breadcrumb
-        items={[
-          {
-            title: (
-              <Link to="/" className="hover:no-underline">
-                Trang chủ
-              </Link>
-            ),
-            href: "/",
-          },
-          { title: "Sản phẩm" },
-        ]}
-        className="mb-4"
-      />
+      
 
       <div className="mb-6">
         <Title level={2} className="!mb-1">
           Sản phẩm
         </Title>
-        <Paragraph type="secondary" className="!mb-0">Danh sách sản phẩm hiện có.</Paragraph>
+        
       </div>
 
       {isLoading ? (

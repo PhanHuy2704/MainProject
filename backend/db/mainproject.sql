@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 12, 2026 lúc 09:27 PM
+-- Thời gian đã tạo: Th1 15, 2026 lúc 03:47 PM
 -- Phiên bản máy phục vụ: 8.0.44
 -- Phiên bản PHP: 8.2.12
 
@@ -41,14 +41,14 @@ CREATE TABLE `brands` (
 --
 
 INSERT INTO `brands` (`id`, `name`, `status`, `created_at`, `updated_at`, `description`) VALUES
-(1, 'Rolex', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'Rolex - thương hiệu đồng hồ cao cấp'),
-(2, 'Tudor', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'Tudor - thương hiệu thể thao/đồng hồ lặn'),
-(3, 'Tissot', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'Tissot - thương hiệu Thụy Sĩ phổ biến'),
-(4, 'Cartier', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'Cartier - thương hiệu thời trang cao cấp'),
+(1, 'Rolex', 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 21:03:43', 'Rolex - thương hiệu đồng hồ cao cấp'),
+(2, 'Tudor', 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 21:03:43', 'Tudor - thương hiệu thể thao/đồng hồ lặn'),
+(3, 'Tissot', 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 21:03:43', 'Tissot - thương hiệu Thụy Sĩ phổ biến'),
+(4, 'Cartier', 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 21:03:43', 'Cartier - thương hiệu thời trang cao cấp'),
 (5, 'Audemars Piguet', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'Audemars Piguet - Haute Horlogerie'),
-(6, 'IWC', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'IWC - thương hiệu đồng hồ phi công'),
-(7, 'Fossil', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'Fossil - thương hiệu thời trang'),
-(8, 'Seiko', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'Seiko - thương hiệu Nhật Bản'),
+(6, 'IWC', 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 21:03:43', 'IWC - thương hiệu đồng hồ phi công'),
+(7, 'Fossil', 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 21:03:43', 'Fossil - thương hiệu thời trang'),
+(8, 'Seiko', 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 21:03:43', 'Seiko - thương hiệu Nhật Bản'),
 (9, 'brand', 'ACTIVE', '2026-01-12 18:30:27', NULL, '123456');
 
 -- --------------------------------------------------------
@@ -71,12 +71,12 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `status`, `created_at`, `updated_at`, `description`) VALUES
-(1, 'Luxury', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'Đồng hồ cao cấp'),
-(2, 'Dive', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'Đồng hồ lặn'),
-(3, 'Sport', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'Đồng hồ thể thao'),
-(4, 'Dress', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'Đồng hồ dress/thời trang'),
-(5, 'Pilot', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'Đồng hồ phi công'),
-(6, 'Automatic', 'ACTIVE', '2026-01-10 18:52:30', NULL, 'Đồng hồ cơ tự động');
+(1, 'Luxury', 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 21:03:43', 'Đồng hồ cao cấp'),
+(2, 'Dive', 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 21:03:43', 'Đồng hồ lặn'),
+(3, 'Sport', 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 21:03:43', 'Đồng hồ thể thao'),
+(4, 'Dress', 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 21:03:43', 'Đồng hồ dress/thời trang'),
+(5, 'Pilot', 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 21:03:43', 'Đồng hồ phi công'),
+(6, 'Automatic', 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 21:03:43', 'Đồng hồ cơ tự động');
 
 -- --------------------------------------------------------
 
@@ -104,7 +104,7 @@ CREATE TABLE `discounts` (
 
 INSERT INTO `discounts` (`discount_id`, `code`, `type`, `start_at`, `end_at`, `value`, `stock`, `used_quantity`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'WELCOME100K', 'FIX', '2026-01-11 17:00:00', '2026-01-15 17:00:00', 100000.00, 100, 2, 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 20:10:29'),
-(2, 'SALE10', 'PERCENT', '2026-01-10 17:00:00', '2026-01-21 17:00:00', 10.00, 5, 0, 'ACTIVE', '2026-01-10 18:52:30', '2026-01-12 19:48:03');
+(2, 'SALE10', 'PERCENT', '2026-01-10 17:00:00', '2026-01-21 17:00:00', 10.00, 5, 3, 'ACTIVE', '2026-01-10 18:52:30', '2026-01-13 13:13:33');
 
 -- --------------------------------------------------------
 
@@ -140,7 +140,9 @@ INSERT INTO `orders` (`order_id`, `code`, `created_at`, `user_id`, `status`, `re
 (5, 'ORD-D6E787AB9B', '2026-01-12 20:00:13', 4, 'COMPLETED', '3454326', '2547245', '5ediiiikd7yko', 'CASH', 34000000.00, 1, '2026-01-12 20:00:59.193000', NULL),
 (6, 'ORD-A5ABECF97F', '2026-01-12 20:02:35', 4, 'CANCELED', 'ci658', '6585675', 'ci66', 'BANK_TRANSFER', 6000000.00, NULL, NULL, NULL),
 (7, 'ORD-1FF8FE858D', '2026-01-12 20:04:55', 4, 'COMPLETED', 'ci658', '6585675', 'hrbneaw', 'BANK_TRANSFER', 6500000.00, NULL, '2026-01-12 20:08:33.730000', NULL),
-(8, 'ORD-3E6A2806BD', '2026-01-12 20:10:29', 4, 'COMPLETED', '123456', '123456', '123456', 'BANK_TRANSFER', 17500000.00, 1, '2026-01-12 20:11:01.826000', NULL);
+(8, 'ORD-3E6A2806BD', '2026-01-12 20:10:29', 4, 'COMPLETED', '123456', '123456', '123456', 'BANK_TRANSFER', 17500000.00, 1, '2026-01-12 20:11:01.826000', NULL),
+(11, 'ORD-5FF6E202B9', '2026-01-13 13:13:33', 4, 'COMPLETED', 'user000', '123456', '123456', 'BANK_TRANSFER', 180000000.00, 2, '2026-01-13 13:14:15.919000', NULL),
+(12, 'ORD-2E011B4380', '2026-01-14 08:04:39', 3, 'SHIPPING', 'user', '123456', '123456', 'CASH', 28000000.00, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -170,7 +172,11 @@ INSERT INTO `order_details` (`order_detail_id`, `order_id`, `product_id`, `quant
 (21, 6, 7, 1, 6000000.00),
 (22, 7, 8, 1, 6500000.00),
 (30, 8, 8, 1, 6500000.00),
-(31, 8, 9, 1, 11000000.00);
+(31, 8, 9, 1, 11000000.00),
+(36, 11, 2, 1, 110000000.00),
+(37, 11, 4, 1, 90000000.00),
+(38, 12, 7, 1, 6000000.00),
+(39, 12, 9, 2, 11000000.00);
 
 -- --------------------------------------------------------
 
@@ -197,14 +203,21 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `name`, `brand_id`, `category_id`, `stock`, `sold_quantity`, `code`, `image`, `price`, `description`, `status`) VALUES
-(2, 'Tudor Black Bay Fifty-Eight', 2, 2, 8, 1, 'TUDOR-BB58', '/assets/images/products/m79030n-0001-tudor-black-bay-fifty-eight-tdr0119547.png', 110000000.00, 'Tudor Black Bay 58 - phong cách diver cổ  điển.', 'IN_STOCK'),
-(3, 'Tissot PRX Powermatic 80 35mm', 3, 3, 23, 7, 'TISSOT-PRX35', '/assets/images/products/tissot-watches-tissot-prx-powermatic-80-35mm-ss-champagne-dial-unisex-watch-t137.207.33.021.00__35088.jpg', 17000000.00, 'Tissot PRX Powermatic 80 - máy cơ, thiết kế thể thao.', 'IN_STOCK'),
-(4, 'Cartier Tank Must Small', 4, 4, 6, 1, 'CARTIER-TANK', '/assets/images/products/cartier-tank-must-small-size-quartz-white-dial-unisex-watch-wsta0110.jpg', 90000000.00, 'Cartier Tank Must - biểu tượng dress watch.', 'IN_STOCK'),
-(5, 'Audemars Piguet Royal Oak 41', 5, 1, 2, 0, 'AP-RO41', '/assets/images/products/WatchGuyNYC_APO48_Audemars_Piguet_Royal_Oak_41mm_Silver-toned_Dial_Stainless_Steel_Bracelet_Men_s_Watch_15400ST.OO.1220ST.02.webp', 950000000.00, 'Royal Oak 41 - thiết kế thể thao sang trọng.', 'IN_STOCK'),
-(6, 'IWC Pilot Mark XVIII', 6, 5, 7, 1, 'IWC-MARK18', '/assets/images/products/IW0083_IWC_Pilot_s_Watch_Mark_XVIII_Antoine_de_Saint_Exupery_in_Steel_on_Strap_with_White_Dial_IW327017_large.webp', 120000000.00, 'IWC Mark XVIII - phong cách phi công cổ điển.', 'IN_STOCK'),
-(7, 'Fossil ME3260', 7, 6, 29, 11, 'FOSSIL-ME3260', '/assets/images/products/ME3260_main.jfif', 6000000.00, 'Fossil ME3260 - máy cơ, phù hợp hằng ngày.', 'IN_STOCK'),
-(8, 'Fossil ME3268', 7, 6, 18, 10, 'FOSSIL-ME3268', '/assets/images/products/ME3268_main.jfif', 6500000.00, 'Fossil ME3268 - máy cơ, thiết kế trẻ trung.', 'IN_STOCK'),
-(9, 'Seiko Cocktail Time', 8, 4, 11, 4, 'SEIKO-CT', '/assets/images/products/cocktailtime_mega.png', 11000000.00, 'Seiko Cocktail Time - mặt số nổi bật, hợp dress.', 'IN_STOCK');
+(2, 'Tudor Black Bay Fifty-Eight', 2, 2, 5, 4, 'TUDOR-BB58', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252207/mainproject/products/17810501_1.avif', 110000000.00, 'Tudor Black Bay 58 - phong cách diver cổ điển.', 'IN_STOCK'),
+(3, 'Tissot PRX Powermatic 80 35mm', 3, 3, 23, 7, 'TISSOT-PRX35', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252205/mainproject/products/17631295_1.avif', 17000000.00, 'Tissot PRX Powermatic 80 - máy cơ, thiết kế thể thao.', 'IN_STOCK'),
+(4, 'Cartier Tank Must Small', 4, 4, 3, 4, 'CARTIER-TANK', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252224/mainproject/products/m126334-0014.avif', 90000000.00, 'Cartier Tank Must - biểu tượng dress watch.', 'IN_STOCK'),
+(5, 'Audemars Piguet Royal Oak 41', 5, 1, 2, 0, 'AP-RO41', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252222/mainproject/products/h69439411.avif', 950000000.00, 'Royal Oak 41 - thiết kế thể thao sang trọng.', 'IN_STOCK'),
+(6, 'IWC Pilot Mark XVIII', 6, 5, 7, 1, 'IWC-MARK18', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252207/mainproject/products/17810501_1.avif', 120000000.00, 'IWC Mark XVIII - phong cách phi công cổ điển.', 'IN_STOCK'),
+(7, 'Fossil ME3260', 7, 6, 28, 12, 'FOSSIL-ME3260', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252226/mainproject/products/ME3260_main.jpg', 6000000.00, 'Fossil ME3260 - máy cơ, phù hợp hằng ngày.', 'IN_STOCK'),
+(8, 'Fossil ME3268', 7, 6, 18, 10, 'FOSSIL-ME3268', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252228/mainproject/products/ME3268_main.jpg', 6500000.00, 'Fossil ME3268 - máy cơ, thiết kế trẻ trung.', 'IN_STOCK'),
+(9, 'Seiko Cocktail Time', 8, 4, 9, 6, 'SEIKO-CT', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252205/mainproject/products/17631295_1.avif', 11000000.00, 'Seiko Cocktail Time - mặt số nổi bật, hợp dress.', 'IN_STOCK'),
+(12, 'Rolex Submariner Date', 1, 2, 5, 1, 'ROLEX-SUB-DATE', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252205/mainproject/products/17631295_1.avif', 320000000.00, 'Rolex Submariner Date - biểu tượng diver, bền bỉ và sang trọng.', 'IN_STOCK'),
+(13, 'Rolex Datejust 36', 1, 1, 4, 0, 'ROLEX-DATEJUST-36', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252207/mainproject/products/17810501_1.avif', 280000000.00, 'Rolex Datejust 36 - thanh lịch, phù hợp đi làm và sự kiện.', 'IN_STOCK'),
+(14, 'Tudor Pelagos', 2, 2, 7, 2, 'TUDOR-PELAGOS', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252207/mainproject/products/17810501_1.avif', 125000000.00, 'Tudor Pelagos - diver tool-watch, mạnh mẽ, dễ đeo hằng ngày.', 'IN_STOCK'),
+(15, 'Tissot Le Locle Powermatic 80', 3, 4, 20, 6, 'TISSOT-LELOCLE', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252224/mainproject/products/m126334-0014.avif', 14500000.00, 'Tissot Le Locle - dress watch phổ biến, máy Powermatic 80.', 'IN_STOCK'),
+(16, 'Cartier Santos Medium', 4, 4, 3, 0, 'CARTIER-SANTOS', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252222/mainproject/products/h69439411.avif', 185000000.00, 'Cartier Santos - thiết kế vuông cổ điển, sang trọng.', 'IN_STOCK'),
+(17, 'IWC Big Pilot', 6, 5, 2, 0, 'IWC-BIGPILOT', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252207/mainproject/products/17810501_1.avif', 260000000.00, 'IWC Big Pilot - phong cách phi công đặc trưng, mặt số dễ đọc.', 'IN_STOCK'),
+(18, 'Seiko 5 Sports', 8, 3, 50, 15, 'SEIKO-5-SPORTS', 'https://res.cloudinary.com/djdretugz/image/upload/v1768252205/mainproject/products/17631295_1.avif', 6500000.00, 'Seiko 5 Sports - lựa chọn thể thao, bền bỉ, dễ tiếp cận.', 'IN_STOCK');
 
 -- --------------------------------------------------------
 
@@ -227,7 +240,8 @@ CREATE TABLE `reviews` (
 INSERT INTO `reviews` (`review_id`, `product_id`, `user_id`, `rating`, `comment`) VALUES
 (1, 3, 2, 5, 'Đeo rất đẹp, máy chạy ổn định.'),
 (2, 2, 2, 5, 'Chất lượng hoàn thiện tốt, rất hài lòng.'),
-(3, 7, 2, 4, 'Giá tốt, phù hợp tầm tiền.');
+(3, 7, 2, 4, 'Giá tốt, phù hợp tầm tiền.'),
+(8, 8, 4, 5, 'abc');
 
 -- --------------------------------------------------------
 
@@ -253,10 +267,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `role`, `created_at`, `updated_at`, `email`, `gender`, `name`, `password_hash`, `phone`, `address`) VALUES
-(1, 'ADMIN', '2026-01-11 01:52:30.836479', NULL, 'admin@watchstore.vn', 'MALE', 'Admin', '$2a$10$z.crOeYOJVC/o26OIf8lU.jH46.z.OANbhLV7HV7c1/.uPOTA7WiG', '0900000000', 'Hà Nội'),
-(2, 'CUSTOMER', '2026-01-11 01:52:30.836479', NULL, 'user@watchstore.vn', 'FEMALE', 'Khách hàng', '123456', '0911111111', 'Hà Nội'),
+(1, 'ADMIN', '2026-01-11 01:52:30.836479', '2026-01-12 21:03:43', 'admin@watchstore.vn', 'MALE', 'Admin', '$2a$10$z.crOeYOJVC/o26OIf8lU.jH46.z.OANbhLV7HV7c1/.uPOTA7WiG', '0900000000', 'Hà Nội'),
+(2, 'CUSTOMER', '2026-01-11 01:52:30.836479', '2026-01-12 21:03:43', 'user@watchstore.vn', 'FEMALE', 'Khách hàng', '123456', '0911111111', 'Hà Nội'),
 (3, 'CUSTOMER', '2026-01-12 11:45:04.898336', NULL, 'user@gmail.com', 'male', 'user', '$2a$10$A5slMHyXkaNVy2o7/TJ7sO/6qjzyfcPSorfJ2H7ehnqQ2B4xZ3kLC', NULL, NULL),
-(4, 'ADMIN', '2026-01-12 11:52:42.679320', NULL, 'admin@gmail.com', NULL, 'admin', '$2a$10$I1m8WZrWK4i1iKUMr8MrCuSaKjnUpVe2l/Un3Q/5xnljs8lguStVC', NULL, NULL);
+(4, 'ADMIN', '2026-01-12 11:52:42.679320', NULL, 'admin@gmail.com', NULL, 'admin', '$2a$10$4b.pQt6kpTx5sIVMV7Ql0OzKaS/UQQN1dptaWPHDOTVPB4xCGl112', NULL, NULL);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -349,19 +363,19 @@ ALTER TABLE `discounts`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `order_id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `order_detail_id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `order_detail_id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `product_id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT cho bảng `reviews`
@@ -373,7 +387,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

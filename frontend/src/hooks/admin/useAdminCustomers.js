@@ -58,5 +58,13 @@ export function useAdminCustomers() {
 		[reload]
 	);
 
-	return { items, loading, error, reload, remove };
+	const update = React.useCallback(
+		async (id, data) => {
+			await AdminUserService.update(id, data);
+			await reload();
+		},
+		[reload]
+	);
+
+	return { items, loading, error, reload, remove, update };
 }
