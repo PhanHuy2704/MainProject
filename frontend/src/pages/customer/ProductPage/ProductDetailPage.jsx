@@ -89,7 +89,7 @@ export default function ProductDetailPage() {
 	if (isLoading) {
 		return (
 			<div className="container mx-auto px-4 py-8">
-				<Card bordered={false} className="shadow-sm">
+						<Card variant="borderless" className="shadow-sm">
 					<Text type="secondary">Đang tải dữ liệu...</Text>
 				</Card>
 			</div>
@@ -154,7 +154,7 @@ export default function ProductDetailPage() {
 			<Row gutter={[32, 32]} className="items-stretch">
 				<Col xs={24} lg={6} className="flex">
 					<Card
-						bordered={false}
+						variant="borderless"
 						className="shadow-sm w-full h-full"
 						styles={{ body: { height: "100%", padding: 0 } }}
 					>
@@ -173,7 +173,7 @@ export default function ProductDetailPage() {
 				</Col>
 
 				<Col xs={24} lg={18} className="flex">
-					<Card bordered={false} className="shadow-sm w-full h-full">
+						<Card variant="borderless" className="shadow-sm w-full h-full">
 						<div className="flex items-start justify-between gap-3">
 							<Title level={3} className="!mb-1">
 								{product.name}
@@ -246,7 +246,7 @@ export default function ProductDetailPage() {
 			</Row>
 
 			<div className="mt-12">
-				<Card bordered={false} className="shadow-sm">
+						<Card variant="borderless" className="shadow-sm">
 					<Title level={4} className="!mb-2 !text-base">
 						Mô tả chi tiết
 					</Title>
@@ -278,7 +278,7 @@ export default function ProductDetailPage() {
 			</div>
 
 			<div className="mt-6">
-				<Card bordered={false} className="shadow-sm">
+						<Card variant="borderless" className="shadow-sm">
 					<Title level={4} className="!mb-2 !text-base">
 						Đánh giá của khách hàng
 					</Title>

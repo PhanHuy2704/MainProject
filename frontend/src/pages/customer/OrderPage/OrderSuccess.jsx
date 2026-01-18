@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default function OrderSuccess() {
 	return (
 		<div className="container mx-auto px-4 py-10">
-			<Card bordered={false} className="shadow-sm">
+			<Card variant="borderless" className="shadow-sm">
 				<Result
 					status="success"
 					title="Đặt hàng thành công"

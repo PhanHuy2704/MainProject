@@ -37,7 +37,7 @@ export default function OrderDetailPage() {
 	if (isLoading) {
 		return (
 			<div className="container mx-auto px-4 py-8">
-				<Card bordered={false} className="shadow-sm">
+						<Card variant="borderless" className="shadow-sm">
 					<Text type="secondary">Đang tải dữ liệu...</Text>
 				</Card>
 			</div>
@@ -98,7 +98,7 @@ export default function OrderDetailPage() {
 			</Breadcrumb>
 
 			<Space direction="vertical" size="large" className="w-full">
-				<Card bordered={false} className="shadow-sm">
+						<Card variant="borderless" className="shadow-sm">
 					<div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
 						<div>
 							<Title level={3} className="!mb-1">
@@ -147,7 +147,7 @@ export default function OrderDetailPage() {
 					</div>
 				</Card>
 
-				<Card bordered={false} className="shadow-sm" title={<div className="font-medium">Sản phẩm</div>}>
+						<Card variant="borderless" className="shadow-sm" title={<div className="font-medium">Sản phẩm</div>}>
 					{items.length === 0 ? (
 						<Text type="secondary">Không có sản phẩm trong đơn.</Text>
 					) : (
@@ -206,7 +206,7 @@ export default function OrderDetailPage() {
 					)}
 				</Card>
 
-				<Card bordered={false} className="shadow-sm">
+						<Card variant="borderless" className="shadow-sm">
 					<div className="flex items-center justify-between">
 						<Text type="secondary">Tạm tính</Text>
 						<Text className="font-medium">{formatVnd(totals.itemsSubtotal)}</Text>

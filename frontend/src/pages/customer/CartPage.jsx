@@ -81,7 +81,7 @@ export default function Cart() {
         </div>
 
         {items.length === 0 ? (
-          <Card bordered={false} className="shadow-sm">
+          <Card variant="borderless" className="shadow-sm">
             <Empty description="Chưa có sản phẩm trong giỏ hàng" />
             <div className="text-center mt-4">
               <Link to="/products" className="hover:no-underline">
@@ -91,7 +91,7 @@ export default function Cart() {
           </Card>
         ) : (
           <>
-            <Card bordered={false} className="shadow-sm">
+            <Card variant="borderless" className="shadow-sm">
               <Text type="secondary">Mã giảm giá</Text>
               <div className="mt-2 flex items-center gap-2">
                 <Input
@@ -115,7 +115,7 @@ export default function Cart() {
               ) : null}
             </Card>
 
-            <Card bordered={false} className="shadow-sm">
+            <Card variant="borderless" className="shadow-sm">
               <List
                 itemLayout="horizontal"
                 dataSource={items}
@@ -210,7 +210,7 @@ export default function Cart() {
               />
             </Card>
 
-            <Card bordered={false} className="shadow-sm">
+            <Card variant="borderless" className="shadow-sm">
               <div className="flex items-center justify-between">
                 <Text type="secondary">Tạm tính</Text>
                 <Text strong>{formatVnd(total)}</Text>

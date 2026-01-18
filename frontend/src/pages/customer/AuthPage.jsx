@@ -184,7 +184,7 @@ function Auth({ onLoginSuccess }) {
   return (
     <div className="min-h-[60vh] flex items-center justify-center px-4 py-10">
       {contextHolder}
-      <Card className="w-full max-w-[520px] shadow-sm" bordered={false}>
+      <Card className="w-full max-w-[520px] shadow-sm" variant="borderless">
         <div className="text-center mb-6">
           <Title level={2} className="!mb-1">Chào mừng</Title>
           <Text type="secondary">Đăng nhập hoặc tạo tài khoản mới</Text>

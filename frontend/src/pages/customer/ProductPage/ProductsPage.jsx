@@ -163,11 +163,11 @@ const ProductsPage = () => {
       </div>
 
       {isLoading ? (
-        <Card bordered={false} className="shadow-sm">
+        <Card variant="borderless" className="shadow-sm">
           <Text type="secondary">Đang tải dữ liệu...</Text>
         </Card>
       ) : products.length === 0 ? (
-        <Card bordered={false} className="shadow-sm">
+        <Card variant="borderless" className="shadow-sm">
           <Empty description="Chưa có sản phẩm" />
         </Card>
       ) : (
@@ -279,7 +279,7 @@ const ProductsPage = () => {
             </Card>
 
             {displayProducts.length === 0 ? (
-              <Card bordered={false} className="shadow-sm">
+              <Card variant="borderless" className="shadow-sm">
                 <Empty description="Không tìm thấy sản phẩm phù hợp" />
               </Card>
             ) : (
@@ -298,7 +298,7 @@ const ProductsPage = () => {
                       <Col key={p.id} xs={24} sm={12} md={8} lg={6} className="flex">
                         <Card
                           hoverable
-                          bordered={false}
+                          variant="borderless"
                           className="shadow-sm flex-1 flex flex-col"
                           styles={{
                             body: {

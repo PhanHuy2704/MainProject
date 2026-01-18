@@ -299,7 +299,7 @@ export default function ProductManage() {
 				onCancel={() => setOpen(false)}
 				okText="Lưu"
 				cancelText="Hủy"
-				destroyOnClose
+				destroyOnHidden
 			>
 				<Form form={form} layout="vertical">
 					<Form.Item name="image" hidden>

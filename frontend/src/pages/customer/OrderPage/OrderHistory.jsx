@@ -163,11 +163,11 @@ export default function OrderHistory() {
 				</div>
 
 				{isLoading ? (
-					<Card bordered={false} className="shadow-sm">
+						<Card variant="borderless" className="shadow-sm">
 						<Text type="secondary">Đang tải dữ liệu...</Text>
 					</Card>
 				) : filteredOrders.length === 0 ? (
-					<Card bordered={false} className="shadow-sm">
+						<Card variant="borderless" className="shadow-sm">
 						<Text type="secondary">Không có đơn hàng phù hợp.</Text>
 					</Card>
 				) : (
@@ -182,7 +182,7 @@ export default function OrderHistory() {
 									key={order.id}
 									hoverable
 									className="shadow-sm cursor-pointer"
-									bordered={false}
+									variant="borderless"
 									onClick={() => goToOrderDetail(order)}
 									title={
 										<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
@@ -285,7 +285,7 @@ export default function OrderHistory() {
 				onOk={submitReview}
 				okText="Gửi đánh giá"
 				cancelText="Đóng"
-				destroyOnClose
+				destroyOnHidden
 				width={720}
 			>
 				<Form form={reviewForm} layout="vertical">

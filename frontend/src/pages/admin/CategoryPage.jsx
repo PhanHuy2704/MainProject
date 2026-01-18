@@ -178,7 +178,7 @@ export default function CategoryPage() {
 				onCancel={() => setOpen(false)}
 				okText="Lưu"
 				cancelText="Hủy"
-				destroyOnClose
+				destroyOnHidden
 			>
 				<Form form={form} layout="vertical">
 					<Form.Item name="name" label="Tên danh mục" rules={[{ required: true, message: "Nhập tên" }]}

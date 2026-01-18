@@ -172,7 +172,7 @@ export default function BrandPage() {
 				onCancel={() => setOpen(false)}
 				okText="Lưu"
 				cancelText="Hủy"
-				destroyOnClose
+				destroyOnHidden
 			>
 				<Form form={form} layout="vertical">
 					<Form.Item name="name" label="Tên thương hiệu" rules={[{ required: true, message: "Nhập tên" }]}

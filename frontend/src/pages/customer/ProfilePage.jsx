@@ -43,7 +43,7 @@ function AccountFieldRow({ label, field, inputType, editingField, startEdit, fin
 							{ value: "Nam", label: "Nam" },
 							{ value: "Nữ", label: "Nữ" },
 						]}
-						bordered={false}
+						variant="borderless"
 						className={isEditing ? "px-2 py-1" : "cursor-pointer px-2 py-1 hover:bg-black/5"}
 						onMouseDown={() => {
 							if (!isEditing) startEdit(field);
@@ -281,7 +281,7 @@ export default function ProfilePage() {
 
 				<div className="flex flex-col md:flex-row gap-4">
 						<div className="w-full md:w-72">
-							<Card bordered={false} className="shadow-sm">
+							<Card variant="borderless" className="shadow-sm">
 								<Menu
 									mode="inline"
 									selectedKeys={[selectedKey]}

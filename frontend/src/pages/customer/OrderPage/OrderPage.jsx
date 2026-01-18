@@ -32,7 +32,7 @@ export default function OrderPage() {
 					<Text type="secondary"></Text>
 				</div>
 
-				<Card bordered={false} className="shadow-sm">
+					<Card variant="borderless" className="shadow-sm">
 					<Paragraph className="!mb-6">
 						Vui lòng nhập thông tin nhận hàng và chọn phương thức thanh toán.
 					</Paragraph>

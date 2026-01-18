@@ -189,7 +189,7 @@ export default function DiscountPage() {
 				onCancel={() => setOpen(false)}
 				okText="Lưu"
 				cancelText="Hủy"
-				destroyOnClose
+				destroyOnHidden
 			>
 				<Form form={form} layout="vertical">
 					<Form.Item name="code" label="Mã giảm giá" rules={[{ required: true, message: "Nhập mã" }]}

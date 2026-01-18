@@ -178,7 +178,7 @@ export default function CustomerManagePage() {
 						message.error(e?.response?.data?.message || "Cập nhật thất bại");
 					}
 				}}
-				destroyOnClose
+				destroyOnHidden
 			>
 				<Form
 					form={form}

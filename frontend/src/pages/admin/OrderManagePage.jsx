@@ -257,15 +257,15 @@ export default function OrderManagePage() {
 			</div>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-				<Card>
+				   <Card variant="outlined">
 					<Statistic title="Tổng đơn" value={stats.total} />
 				</Card>
-				<Card>
+				   <Card variant="outlined">
 					<Statistic title="Doanh thu (hoàn thành)" value={stats.revenue} formatter={(v) => formatVnd(v)} />
 				</Card>
 			</div>
 
-			<Card>
+			   <Card variant="outlined">
 				<Table
 					rowKey="id"
 					columns={columns}
@@ -288,7 +288,7 @@ export default function OrderManagePage() {
 				okText="Lưu"
 				cancelText="Hủy"
 				width={720}
-				destroyOnClose
+				destroyOnHidden
 			>
 				<Form form={form} layout="vertical">
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
