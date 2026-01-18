@@ -24,4 +24,5 @@ public class UserDTO {
 	private String gender;
 	private String address;
 	private LocalDateTime createdAt;
+	private String passwordHash;
 }

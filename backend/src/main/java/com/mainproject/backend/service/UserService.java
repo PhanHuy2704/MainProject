@@ -62,6 +62,7 @@ public class UserService {
 		return toDTO(userRepository.save(user));
 	}
 
+
 	public void changePasswordByEmail(String email, ChangePasswordRequest req) {
 		if (req == null) {
 			throw new BadRequestException("Request body is required");
@@ -77,6 +78,17 @@ public class UserService {
 			throw new UnauthorizedException("Current password is incorrect");
 		}
 		user.setPasswordHash(passwordEncoder.encode(newPassword));
+		userRepository.save(user);
+	}
+
+	
+	public void changePasswordById(Long id, ChangePasswordRequest req) {
+		if (req == null || req.getNewPassword() == null || req.getNewPassword().isBlank()) {
+			throw new BadRequestException("newPassword is required");
+		}
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found: " + id));
+		user.setPasswordHash(passwordEncoder.encode(req.getNewPassword()));
 		userRepository.save(user);
 	}
 
@@ -104,6 +116,7 @@ public class UserService {
 				.gender(u.getGender())
 				.address(u.getAddress())
 				.createdAt(u.getCreatedAt())
+				.passwordHash(u.getPasswordHash())
 				.build();
 	}
 

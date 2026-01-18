@@ -5,6 +5,8 @@ import { Button, Card, Input, Popconfirm, Space, Statistic, Table, Typography, m
 import { useAdminCustomers } from "../../hooks/admin/useAdminCustomers";
 import { formatDateTimeVi, parseDateTimeAny } from "../../utils/formatters";
 
+import { AdminUserService } from "../../service/AdminUserService";
+
 export default function CustomerManagePage() {
 	const { Title } = Typography;
 	const { token } = theme.useToken();
@@ -16,6 +18,10 @@ export default function CustomerManagePage() {
 	const [pagination, setPagination] = useState({ current: 1, pageSize: 8 });
 	const [query, setQuery] = useState("");
 	const { items, loading, error, remove, update } = useAdminCustomers();
+
+	
+	
+	if (!window.AdminUserService) window.AdminUserService = AdminUserService;
 
 	
 	const [viewing, setViewing] = useState(null); 
@@ -77,7 +83,8 @@ export default function CustomerManagePage() {
 						   onClick={() => {
 							   setViewing(record);
 							   setModalOpen(true);
-							   form.setFieldsValue(record);
+							   // Truyền mật khẩu vào form nếu có
+							   form.setFieldsValue({ ...record, password: record.password });
 						   }}
 					   >
 						   Xem
@@ -168,9 +175,12 @@ export default function CustomerManagePage() {
 				onOk={async () => {
 					try {
 						const values = await form.validateFields();
-						
-						const { name, email, ...updatable } = values;
+						const { name, email, passwordNew, ...updatable } = values;
 						await (viewing && viewing.id && update(viewing.id, updatable));
+						
+						if (viewing && viewing.id && passwordNew) {
+							await window.AdminUserService.changePassword(viewing.id, passwordNew);
+						}
 						message.success("Cập nhật thành công");
 						setModalOpen(false);
 					} catch (e) {
@@ -183,7 +193,7 @@ export default function CustomerManagePage() {
 				<Form
 					form={form}
 					layout="vertical"
-					initialValues={viewing}
+					initialValues={viewing ? { ...viewing, password: viewing.password } : {}}
 					preserve={false}
 				>
 					<Form.Item label="Tên" name="name">
@@ -191,6 +201,9 @@ export default function CustomerManagePage() {
 					</Form.Item>
 					<Form.Item label="Email" name="email">
 						<Input readOnly disabled />
+					</Form.Item>
+					<Form.Item label="Mật khẩu mới" name="passwordNew" rules={[{ min: 6, message: "Mật khẩu tối thiểu 6 ký tự" }]}> 
+						<Input.Password placeholder="Nhập mật khẩu mới nếu muốn đổi" />
 					</Form.Item>
 					<Form.Item label="SĐT" name="phone">
 						<Input />

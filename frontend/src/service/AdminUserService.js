@@ -16,6 +16,13 @@ async function update(id, data) {
 	return res.data;
 }
 
+
+async function changePassword(id, newPassword) {
+
+	await http.put(`/api/admin/users/${id}/password`, { newPassword });
+	return true;
+}
+
 async function remove(id) {
 	await http.delete(`/api/admin/users/${id}`);
 	return true;
@@ -26,4 +33,5 @@ export const AdminUserService = {
 	getById,
 	update,
 	remove,
+	changePassword,
 };
