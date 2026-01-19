@@ -1,4 +1,19 @@
-/* Customer card (block) style for elevated look */
+
+.product-detail-image-card,
+.product-detail-info-card {
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.product-detail-image-card .ant-card-body,
+.product-detail-info-card .ant-card-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .customer-bg .ant-card, .customer-bg .ant-card .ant-card-body {
   background: #fff !important;
   border-radius: 18px !important;
@@ -12,7 +27,7 @@
 .customer-bg .ant-card .ant-card-body {
   border-radius: 18px !important;
 }
-/* Tự động nổi bật card trong admin layout */
+
 .admin-bg .ant-card, .admin-bg .ant-card .ant-card-body {
   background: #fff !important;
   border-radius: 18px !important;
@@ -26,7 +41,7 @@
 .admin-bg .ant-card .ant-card-body {
   border-radius: 18px !important;
 }
-/* Admin card (block) style for elevated look */
+
 .admin-card, .ant-card.admin-card, .ant-card.admin-card .ant-card-body {
   background: #fff !important;
   border-radius: 18px !important;

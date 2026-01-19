@@ -151,98 +151,138 @@ export default function ProductDetailPage() {
 				<Breadcrumb.Item>{product.name}</Breadcrumb.Item>
 			</Breadcrumb>
 
+
+
 			<Row gutter={[32, 32]} className="items-stretch">
-				<Col xs={24} lg={6} className="flex">
-					<Card
-						variant="borderless"
-						className="shadow-sm w-full h-full"
-						styles={{ body: { height: "100%", padding: 0 } }}
+				{/* Khối ảnh sản phẩm */}
+				<Col xs={24} lg={6} className="flex items-stretch">
+					<div
+						style={{
+							width: '100%',
+							aspectRatio: '1 / 1',
+							background: '#fff',
+							borderRadius: 18,
+							boxShadow: '0 2px 12px 0 rgba(30,64,175,0.07), 0 1px 3px 0 rgba(30,64,175,0.04)',
+							border: '1.5px solid #e5e7eb',
+							overflow: 'hidden',
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+						}}
 					>
-						<div className="bg-gray-50 h-full flex items-center justify-center overflow-hidden">
+						<div
+							style={{
+								width: '85%',
+								height: '85%',
+								background: '#f9fafb',
+								borderRadius: 12,
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+							}}
+						>
 							<img
 								src={product.image || fallbackImage}
 								alt={product.name}
-								className="max-w-full max-h-full object-contain p-6"
+								style={{ width: '100%', height: '100%', objectFit: 'contain', padding: 0 }}
 								onError={(e) => {
 									e.currentTarget.onerror = null;
 									e.currentTarget.src = fallbackImage;
 								}}
 							/>
 						</div>
-					</Card>
+					</div>
 				</Col>
 
-				<Col xs={24} lg={18} className="flex">
-						<Card variant="borderless" className="shadow-sm w-full h-full">
-						<div className="flex items-start justify-between gap-3">
-							<Title level={3} className="!mb-1">
-								{product.name}
-							</Title>
-							<Tag color={inStock ? "green" : "red"}>{statusText}</Tag>
-						</div>
+				{/* Khối thông tin sản phẩm */}
+				<Col xs={24} lg={18} className="flex items-stretch">
+					<div
+						style={{
+							width: '100%',
+							display: 'flex',
+							flexDirection: 'column',
+							justifyContent: 'flex-start',
+							alignItems: 'stretch',
+							background: '#fff',
+							borderRadius: 18,
+							boxShadow: '0 2px 12px 0 rgba(30,64,175,0.07), 0 1px 3px 0 rgba(30,64,175,0.04)',
+							border: '1.5px solid #e5e7eb',
+							overflow: 'hidden',
+							padding: 24,
+							minHeight: 0,
+						}}
+					>
+						<div className="flex flex-col h-full" style={{ borderRadius: 18, height: '100%', padding: 0 }}>
+							   <div className="flex items-start justify-between gap-3">
+								   <Title level={3} className="!mb-1">
+									   {product.name}
+								   </Title>
+								   <Tag color={inStock ? "green" : "red"}>{statusText}</Tag>
+							   </div>
 
-						{product.brand ? (
-							<Text type="secondary" className="text-sm">
-								Thương hiệu: {product.brand}
-							</Text>
-						) : (
-							<Text type="secondary" className="text-sm">
-								&nbsp;
-							</Text>
-						)}
+							   {product.brand ? (
+								   <Text type="secondary" className="text-sm">
+									   Thương hiệu: {product.brand}
+								   </Text>
+							   ) : (
+								   <Text type="secondary" className="text-sm">
+									   &nbsp;
+								   </Text>
+							   )}
 
-						<div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
-							<Text type="secondary" className="text-sm">
-								Số lượng còn lại: {stock}
-							</Text>
-							<Text type="secondary" className="text-sm">
-								Đã bán: {soldQuantity}
-							</Text>
-						</div>
+							   <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+								   <Text type="secondary" className="text-sm">
+									   Số lượng còn lại: {stock}
+								   </Text>
+								   <Text type="secondary" className="text-sm">
+									   Đã bán: {soldQuantity}
+								   </Text>
+							   </div>
 
-						<div className="mt-4">
-							<Text className="text-blue-800 font-semibold" style={{ fontSize: 22 }}>
-								{formatVnd(product.price)}
-							</Text>
-						</div>
+							   <div className="mt-4">
+								   <Text className="text-blue-800 font-semibold" style={{ fontSize: 22 }}>
+									   {formatVnd(product.price)}
+								   </Text>
+							   </div>
 
-						{product.description ? (
-							<Paragraph
-								type="secondary"
-								className="!mt-3 !mb-0 text-sm"
-								ellipsis={{ rows: 3 }}
-							>
-								{product.description}
-							</Paragraph>
-						) : null}
+							   {product.description ? (
+								   <Paragraph
+									   type="secondary"
+									   className="!mt-3 !mb-0 text-sm"
+									   ellipsis={{ rows: 3 }}
+								   >
+									   {product.description}
+								   </Paragraph>
+							   ) : null}
 
-						<div className="mt-6 flex flex-wrap gap-2">
-							{inStock ? (
-								<Button
-									type="primary"
-									onClick={() => {
-										if (!isAuthenticated) {
-											message.warning("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng");
-											navigate("/auth");
-											return;
-										}
-										addToCart(product, 1);
-										message.success("Đã thêm vào giỏ hàng");
-									}}
-								>
-									Thêm vào giỏ hàng
-								</Button>
-							) : (
-								<Link to="/contact" className="hover:no-underline">
-									<Button type="primary">Liên hệ</Button>
-								</Link>
-							)}
-							<Link to="/products" className="hover:no-underline">
-								<Button>Quay lại</Button>
-							</Link>
-						</div>
-					</Card>
-				</Col>
+							   <div className="mt-6 flex flex-wrap gap-2">
+								   {inStock ? (
+									   <Button
+										   type="primary"
+										   onClick={() => {
+											   if (!isAuthenticated) {
+												   message.warning("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng");
+												   navigate("/auth");
+												   return;
+											   }
+											   addToCart(product, 1);
+											   message.success("Đã thêm vào giỏ hàng");
+										   }}
+									   >
+										   Thêm vào giỏ hàng
+									   </Button>
+								   ) : (
+									   <Link to="/contact" className="hover:no-underline">
+										   <Button type="primary">Liên hệ</Button>
+									   </Link>
+								   )}
+								   <Link to="/products" className="hover:no-underline">
+									   <Button>Quay lại</Button>
+								   </Link>
+							   </div>
+						   </div>
+					   </div>
+				   </Col>
 			</Row>
 
 			<div className="mt-12">
