@@ -58,7 +58,7 @@ const HomePageCustomer = () => {
                     <Tag color="blue" className="mb-4">
                       {item.subtitle}
                     </Tag>
-                    <Title level={1} className="text-white mb-4 banner-text-outline">
+                    <Title level={1} className="!text-white font-bold mb-4 banner-text-outline" style={{ color: '#fff' }}>
                       {item.title}
                     </Title>
                     <Paragraph className="text-white text-lg mb-8 banner-text-outline">
@@ -80,7 +80,7 @@ const HomePageCustomer = () => {
       {/* ======================= */}
       {/* USP / Lý do chọn chúng tôi */}
       {/* ======================= */}
-      <div className="bg-gray-50 py-12">
+      <div className="bg-gray-50 py-12" style={{ background: '#ECFEFF' }}>
         <div className="container mx-auto px-4">
           <Row gutter={[24, 24]} className="text-center">
             <Col xs={24} sm={12} md={6}>
@@ -118,7 +118,7 @@ const HomePageCustomer = () => {
       {/* ======================= */}
       {/* About / Về Watch Store */}
       {/* ======================= */}
-      <div className="py-16 container mx-auto px-4">
+      <div className="py-16 container mx-auto px-4" style={{ background: '#F8FAFC' }}>
         <Row gutter={[48, 24]} align="middle">
           <Col xs={24} lg={12}>
             <div className="about-image relative">
@@ -152,7 +152,7 @@ const HomePageCustomer = () => {
       {/* ======================= */}
       {/* Promo / Ưu đãi đặc biệt */}
       {/* ======================= */}
-      <div className="bg-gray-50 py-12" id="promo">
+      <div className="bg-gray-50 py-12" id="promo" style={{ background: '#ECFEFF' }}>
         <div className="container mx-auto px-4 text-center">
           <Title level={2} className="!mb-3 text-slate-800">
             Ưu Đãi Đặc Biệt

@@ -92,9 +92,9 @@ function CustomerHeader() {
     user?.username || user?.name || user?.fullName || user?.email || "Tài khoản";
 
   const menuItems = [
-    { key: "/", label: <Link to="/" className="hover:no-underline">Trang chủ</Link> },
-    { key: "/products", label: <Link to="/products" className="hover:no-underline">Sản phẩm</Link> },
-    { key: "/contact", label: <Link to="/contact" className="hover:no-underline">Liên hệ</Link> },
+    { key: "/", label: <Link to="/" className="text-white hover:text-white"style={{ color: '#fff' }}>Trang chủ</Link> },
+    { key: "/products", label: <Link to="/products" className="text-white hover:text-white"style={{ color: '#fff' }}>Sản phẩm</Link> },
+    { key: "/contact", label: <Link to="/contact" className="text-white hover:text-white"style={{ color: '#fff' }}>Liên hệ</Link> },
   ];
 
   const userItems = isAuthenticated
@@ -119,7 +119,7 @@ function CustomerHeader() {
     : [];
 
   return (
-    <AntHeader className="bg-[#020A2F] px-0 relative z-20" >
+    <AntHeader className="bg-[#1E40AF] px-0 relative z-20" >
       <div className="container mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center">
           <img
@@ -145,14 +145,14 @@ function CustomerHeader() {
         
         <Space size="middle">
           {isAuthenticated && isAdminUser(user) ? (
-				<Link to="/admin" className="hover:no-underline">
-					<Button type="text" className="text-white hover:text-white" aria-label="Admin">
-						<Space size={6}>
+            <Link to="/admin" className="hover:no-underline">
+              <Button type="text" className="text-white hover:text-white" aria-label="Admin">
+                <Space size={6}>
                   <span>Quản trị</span>
-						</Space>
-					</Button>
-				</Link>
-			) : null}
+                </Space>
+              </Button>
+            </Link>
+          ) : null}
 
           <Link to="/cart" className="hover:no-underline">
             <Button type="text" className="text-white hover:text-white" aria-label="Giỏ hàng">
@@ -193,7 +193,7 @@ function CustomerHeader() {
 // FOOTER COMPONENT
 function CustomerFooter() {
   return (
-    <AntFooter className="bg-[#020A2F] text-white p-0 relative z-20">
+    <AntFooter className="bg-[#1E40AF] text-white p-0 relative z-20">
       <div className="py-10">
         <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-0">
@@ -318,14 +318,15 @@ function CustomerLayout() {
   const disablePagePadding = isHome || location.pathname === "/auth";
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-900">
+    <div className="min-h-screen flex flex-col customer-bg" style={{ background: '#ECFEFF' }}>
       <CustomerHeader />
       <main
         className={
           disablePagePadding
-            ? `flex-1 relative z-0 bg-slate-900${isHome ? " overflow-hidden" : ""}`
-            : `flex-1 py-10 relative z-0 bg-slate-900${isHome ? " overflow-hidden" : ""}`
+            ? `flex-1 relative z-0${isHome ? " overflow-hidden" : ""}`
+            : `flex-1 py-10 relative z-0${isHome ? " overflow-hidden" : ""}`
         }
+        style={{ background: '#ECFEFF' }}
       >
         <Outlet />
       </main>

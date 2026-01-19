@@ -66,23 +66,23 @@ function AdminSidebar() {
 	}));
 
 	return (
-		<Sider
-			trigger={null}
-			theme="dark"
-			className="shadow-md"
-			width={SIDEBAR_WIDTH}
-			style={{
-				overflow: "auto",
-				height: "100vh",
-				position: "fixed",
-				left: 0,
-				top: 0,
-				bottom: 0,
-				zIndex: 10,
-				backgroundColor: "#020A2F",
-				transition: "none",
-			}}
-		>
+		   <Sider
+			   trigger={null}
+			   theme="l"
+			   className="shadow-md"
+			   width={SIDEBAR_WIDTH}
+			   style={{
+				   overflow: "auto",
+				   height: "100vh",
+				   position: "fixed",
+				   left: 0,
+				   top: 0,
+				   bottom: 0,
+				   zIndex: 10,
+				   backgroundColor: "#1E40AF",
+				   transition: "none",
+			   }}
+		   >
 			<div className="h-16 px-4 flex items-center border-b border-slate-800">
 				<Link to="/admin/dashboard" className="flex items-center gap-2 min-w-0">
 					<img
@@ -95,7 +95,7 @@ function AdminSidebar() {
 								"https://via.placeholder.com/32x32/1E40AF/FFFFFF?text=WS";
 						}}
 					/>
-					<Title level={4} className="text-white" style={{ margin: 0, lineHeight: 1 }}>
+					<Title level={4} className="text-white" style={{ margin: 0, lineHeight: 1, color: '#fff'}}>
 						Quản trị viên
 					</Title>
 				</Link>
@@ -291,11 +291,11 @@ function AdminTopHeader() {
 
 function AdminShell() {
        return (
-	       <Layout style={{ minHeight: "100vh", transition: "none", background: "#0f172a" }}>
+	       <Layout className="admin-bg" style={{ minHeight: "100vh", transition: "none" }}>
 		       <AdminSidebar />
-		       <Layout style={{ marginLeft: SIDEBAR_WIDTH, transition: "none", background: "#0f172a" }}>
+		       <Layout className="admin-bg" style={{ marginLeft: SIDEBAR_WIDTH, transition: "none" }}>
 			       <AdminTopHeader />
-			       <Content className="p-6 bg-slate-900" style={{ background: "#0f172a" }}>
+			       <Content className="p-6 admin-bg">
 				       <Outlet />
 			       </Content>
 		       </Layout>

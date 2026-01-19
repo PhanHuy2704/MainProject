@@ -108,7 +108,12 @@ export default function Cart() {
                   <Text type="secondary">
                     Đã áp dụng: <Text strong>{appliedCoupon.code}</Text>
                   </Text>
-                  <Button type="link" size="small" className="px-0" onClick={clearCoupon}>
+                  <Button
+                    type="default"
+                    size="small"
+                    className="btn-danger rounded px-4 py-1 font-semibold"
+                    onClick={clearCoupon}
+                  >
                     Bỏ mã
                   </Button>
                 </div>
@@ -180,10 +185,9 @@ export default function Cart() {
                             </Text>
 
                             <Button
-                              type="link"
-                              danger
+                              type="default"
                               size="small"
-                              className="px-0"
+                              className="btn-danger rounded px-4 py-1 font-semibold"
                               onClick={() => onRemoveItem(item.id)}
                               aria-label="Xóa sản phẩm"
                             >
