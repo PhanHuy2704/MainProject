@@ -19,7 +19,7 @@ const HomePageCustomer = () => {
       title: "Đẳng Cấp Vượt Trội",
       subtitle: "Bộ sưu tập đồng hồ cao cấp",
       description: "Thiết kế độc quyền, thể hiện đẳng cấp và phong cách của bạn",
-      image: "/assets/images/banners/banner1.jpg",
+      image: "/assets/images/banners/banner5.webp",
       buttonText: "Khám phá ngay",
       buttonLink: "/products",
     },
@@ -28,7 +28,7 @@ const HomePageCustomer = () => {
       title: "Ưu đãi ngập tràn",
       subtitle: "Giảm giá sâu nhiều mặt hàng",
       description: "Cơ hội sở hữu đồng hồ chất lượng với giá tốt nhất",
-      image: "/assets/images/banners/banner2.jpg",
+      image: "/assets/images/banners/banner4.jpg",
       buttonText: "Mua ngay",
       buttonLink: "/products",
     },
@@ -123,7 +123,7 @@ const HomePageCustomer = () => {
           <Col xs={24} lg={12}>
             <div className="about-image relative">
               <img
-                src="/assets/images/about-store.jpg"
+                src="/assets/images/aboutstore2.webp"
                 alt="Watch Store"
                 className="rounded-lg shadow-lg w-full"
               />

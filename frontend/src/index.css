@@ -4,7 +4,6 @@
   min-height: 340px;
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
 .product-detail-image-card .ant-card-body,
@@ -55,7 +54,6 @@
 .ant-card.admin-card .ant-card-body {
   border-radius: 18px !important;
 }
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -64,6 +62,7 @@
   --color-header: #1E40AF;
   --color-footer: #1E40AF;
   --color-sidebar: #1E40AF;
+
   --color-background: #ECFEFF;
   --color-admin-bg: #F0F9FF;
   --color-form-bg: #fff;
