@@ -47,7 +47,7 @@ export function useCart() {
 	const totals = React.useMemo(() => getCartTotals(items), [items]);
 	const { total } = totals;
 
-	// Discount logic moved from CartPage.jsx
+
 	const hasCoupon = Boolean(coupon?.code);
 	const discount = React.useMemo(() => {
 		if (!hasCoupon) return 0;
