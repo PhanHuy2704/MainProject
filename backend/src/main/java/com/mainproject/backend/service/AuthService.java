@@ -3,6 +3,7 @@ package com.mainproject.backend.service;
 import java.util.Locale;
 import java.util.Map;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -16,8 +17,6 @@ import com.mainproject.backend.exception.UnauthorizedException;
 import com.mainproject.backend.repository.UserRepository;
 import com.mainproject.backend.security.JwtUtil;
 import com.mainproject.backend.security.TokenBlacklist;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -60,7 +59,7 @@ public class AuthService {
 		return AuthDTO.builder().user(toDTO(saved)).token(token).build();
 	}
 
-	// Not readOnly: may upgrade plaintext passwords to bcrypt on successful login.
+	
 	public AuthDTO login(Map<String, Object> payload) {
 		AuthRequest.LoginRequest req = parseLoginRequest(payload);
 		String email = req.getEmail();
@@ -92,8 +91,7 @@ public class AuthService {
 			}
 		}
 
-		// Backward-compat / dev convenience:
-		// allow storing plaintext in DB (NOT recommended). If matched, upgrade to bcrypt.
+
 		if (!rawPassword.equals(stored)) return false;
 		user.setPasswordHash(passwordEncoder.encode(rawPassword));
 		userRepository.save(user);
@@ -114,7 +112,7 @@ public class AuthService {
 
 		String password = asString(body.get("password"));
 		if (!StringUtils.hasText(password)) {
-			// Backward-compat: allow clients accidentally sending passwordHash
+			
 			password = asString(body.get("passwordHash"));
 		}
 
@@ -142,7 +140,7 @@ public class AuthService {
 
 		String password = asString(body.get("password"));
 		if (!StringUtils.hasText(password)) {
-			// Backward-compat: allow clients accidentally sending passwordHash
+			
 			password = asString(body.get("passwordHash"));
 		}
 

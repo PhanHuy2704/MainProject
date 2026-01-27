@@ -15,9 +15,9 @@ import com.mainproject.backend.dto.OrderDTO;
 import com.mainproject.backend.dto.OrderDetailDTO;
 import com.mainproject.backend.dto.request.CheckoutRequest;
 import com.mainproject.backend.dto.request.OrderRequest;
+import com.mainproject.backend.entity.Discount;
 import com.mainproject.backend.entity.Product;
 import com.mainproject.backend.entity.User;
-import com.mainproject.backend.entity.Discount;
 import com.mainproject.backend.entity.order.Order;
 import com.mainproject.backend.entity.order.OrderDetail;
 import com.mainproject.backend.exception.BadRequestException;
@@ -89,7 +89,7 @@ public class OrderService {
 		User user = userRepository.findByEmailIgnoreCase(email)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found: " + email));
 
-		// Build order details (validate stock + compute subtotal)
+		
 		BigDecimal subtotal = BigDecimal.ZERO;
 		List<OrderDetail> details = req.getItems().stream().map(item -> {
 			Long productId = item == null ? null : item.getProductId();
@@ -146,7 +146,7 @@ public class OrderService {
 		Order savedOrder = orderRepository.save(order);
 		for (OrderDetail d : details) {
 			d.setOrder(savedOrder);
-			// update inventory
+			
 			Product p = d.getProduct();
 			p.setStock(p.getStock() - d.getQuantity());
 			p.setSoldQuantity(p.getSoldQuantity() + d.getQuantity());
@@ -262,7 +262,7 @@ public class OrderService {
 		}
 		if (req.getReceiveAt() != null)
 			order.setReceiveAt(req.getReceiveAt());
-		// endAt is derived from status: COMPLETED => now, otherwise null
+		
 		return toDTO(orderRepository.save(order));
 	}
 

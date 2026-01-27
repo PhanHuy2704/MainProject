@@ -7,17 +7,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mainproject.backend.dto.ReviewDTO;
 import com.mainproject.backend.dto.request.ReviewRequest;
-import com.mainproject.backend.entity.User;
 import com.mainproject.backend.entity.Product;
 import com.mainproject.backend.entity.Review;
-import com.mainproject.backend.exception.ResourceNotFoundException;
+import com.mainproject.backend.entity.User;
+import com.mainproject.backend.entity.order.Order;
 import com.mainproject.backend.exception.BadRequestException;
+import com.mainproject.backend.exception.ResourceNotFoundException;
 import com.mainproject.backend.exception.UnauthorizedException;
+import com.mainproject.backend.repository.OrderDetailRepository;
 import com.mainproject.backend.repository.ProductRepository;
 import com.mainproject.backend.repository.ReviewRepository;
 import com.mainproject.backend.repository.UserRepository;
-import com.mainproject.backend.repository.OrderDetailRepository;
-import com.mainproject.backend.entity.order.Order;
 
 import lombok.RequiredArgsConstructor;
 
@@ -82,7 +82,7 @@ public class ReviewService {
 			return toDTO(review);
 		}
 
-		// Only allow updating rating/comment (no user/product reassignment)
+		
 		if (req.getRating() != null)
 			review.setRating(req.getRating());
 		if (req.getComment() != null)

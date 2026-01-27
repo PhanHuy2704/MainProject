@@ -40,7 +40,7 @@ public class AdminUserController {
 		return userService.updateById(id, req);
 	}
 
-	// Đổi mật khẩu cho user theo id
+	
 	@PutMapping("/{id}/password")
 	public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody ChangePasswordRequest req) {
 		userService.changePasswordById(id, req);

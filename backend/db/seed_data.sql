@@ -1,7 +1,7 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
--- Reset data (safe for reseeding)
+-- Reset data
 TRUNCATE TABLE order_details;
 TRUNCATE TABLE reviews;
 TRUNCATE TABLE orders;
@@ -37,7 +37,7 @@ INSERT INTO categories (id, name, status, description) VALUES
   (5, 'Pilot', 'ACTIVE', 'Đồng hồ phi công'),
   (6, 'Automatic', 'ACTIVE', 'Đồng hồ cơ tự động');
 
--- PRODUCTS (image paths are for frontend public assets)
+-- PRODUCTS 
 INSERT INTO products (product_id, name, brand_id, category_id, stock, sold_quantity, code, image, price, description, status) VALUES
   (1, 'Rolex Datejust 41', 1, 1, 10, 2, 'ROLEX-DJ41', '/assets/images/products/m126334-0014.avif', 250000000.00, 'Rolex Datejust 41 - thiết kế sang trọng, phù hợp nhiều dịp.', 'IN_STOCK'),
   (2, 'Tudor Black Bay Fifty-Eight', 2, 2, 8, 1, 'TUDOR-BB58', '/assets/images/products/m79030n-0001-tudor-black-bay-fifty-eight-tdr0119547.png', 110000000.00, 'Tudor Black Bay 58 - phong cách diver cổ điển.', 'IN_STOCK'),
