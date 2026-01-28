@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Button, Card, DatePicker, Form, Input, InputNumber, Modal, Popconfirm, Select, Space, Statistic, Table, Typography, message, theme } from "antd";
+import dayjs from "dayjs";
 
 import { useAdminDiscounts } from "../../hooks/admin/useAdminDiscounts";
 import { formatDateVi } from "../../utils/formatters";
@@ -33,6 +34,10 @@ export default function DiscountPage() {
 	const [editing, setEditing] = useState(null);
 	const [pagination, setPagination] = useState({ current: 1, pageSize: 8 });
 	const [query, setQuery] = useState("");
+	const [filterStatus, setFilterStatus] = useState([]);
+	const [filterType, setFilterType] = useState([]);
+	const [filterStartDateRange, setFilterStartDateRange] = useState(undefined);
+	const [filterEndDateRange, setFilterEndDateRange] = useState(undefined);
 	const { items, loading, save, remove, toFormValues } = useAdminDiscounts();
 
 	const stats = useMemo(() => {
@@ -48,6 +53,15 @@ export default function DiscountPage() {
 		form.resetFields();
 		form.setFieldsValue({ type: "fixed", status: "Hoạt động", value: 0, quantity: 0 });
 		setOpen(true);
+	};
+
+	const resetFilters = () => {
+		setQuery("");
+		setFilterStatus([]);
+		setFilterType([]);
+		setFilterStartDateRange(undefined);
+		setFilterEndDateRange(undefined);
+		setPagination({ current: 1, pageSize: pagination.pageSize });
 	};
 
 	const openEdit = (record) => {
@@ -122,25 +136,47 @@ export default function DiscountPage() {
 	];
 
 	const filtered = useMemo(() => {
-		const list = Array.isArray(items) ? items : [];
+		let list = Array.isArray(items) ? items : [];
 		const q = String(query || "").trim().toLowerCase();
-		if (!q) return list;
-		return list.filter((it) => {
-			return (
+		if (q) {
+			list = list.filter((it) =>
 				String(it?.code || "").toLowerCase().includes(q) ||
 				String(it?.id || "").toLowerCase().includes(q) ||
 				String(it?.type || "").toLowerCase().includes(q)
 			);
-		});
-	}, [items, query]);
+		}
+		if (Array.isArray(filterStatus) && filterStatus.length > 0) {
+			list = list.filter((it) => filterStatus.includes(normalizeActiveLabel(it?.status)));
+		}
+		if (Array.isArray(filterType) && filterType.length > 0) {
+			list = list.filter((it) => filterType.includes(normalizeType(it?.type)));
+		}
+		if (filterStartDateRange && Array.isArray(filterStartDateRange) && filterStartDateRange[0] && filterStartDateRange[1]) {
+			const [start, end] = filterStartDateRange;
+			list = list.filter((it) => {
+				if (!it?.startAt) return false;
+				const d = dayjs(it.startAt);
+				return d.isSame(start, "day") || d.isSame(end, "day") || (d.isAfter(start, "day") && d.isBefore(end, "day"));
+			});
+		}
+		if (filterEndDateRange && Array.isArray(filterEndDateRange) && filterEndDateRange[0] && filterEndDateRange[1]) {
+			const [start, end] = filterEndDateRange;
+			list = list.filter((it) => {
+				if (!it?.endAt) return false;
+				const d = dayjs(it.endAt);
+				return d.isSame(start, "day") || d.isSame(end, "day") || (d.isAfter(start, "day") && d.isBefore(end, "day"));
+			});
+		}
+		return list;
+	}, [items, query, filterStatus, filterType, filterStartDateRange, filterEndDateRange]);
 
 	return (
 		<div className="space-y-4">
-			<div className="flex items-center justify-between">
+			<div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
 				<Title level={4} style={{ margin: 0 }}>
 					Quản lý giảm giá
 				</Title>
-				<Space>
+				<Space wrap>
 					<Input.Search
 						placeholder="Tìm theo mã hoặc loại"
 						allowClear
@@ -152,7 +188,7 @@ export default function DiscountPage() {
 							setQuery(e.target.value);
 							setPagination({ current: 1, pageSize: pagination.pageSize });
 						}}
-						style={{ width: 300 }}
+						style={{ width: 160 }}
 					/>
 					<Button type="primary" onClick={openCreate}>
 						Thêm giảm giá
@@ -167,6 +203,68 @@ export default function DiscountPage() {
 				<Card>
 					<Statistic title="Đang hoạt động" value={stats.active} />
 				</Card>
+			</div>
+
+			{/* Bộ lọc ngay dưới thống kê, trên bảng */}
+			<div className="flex flex-wrap gap-2 mb-2 mt-2 justify-end">
+				<Select
+					allowClear
+					mode="multiple"
+					placeholder="Trạng thái"
+					style={{ width: 160 }}
+					options={[
+						{ value: "Hoạt động", label: "Hoạt động" },
+						{ value: "Ngừng hoạt động", label: "Ngừng hoạt động" },
+						{ value: "Đã quá hạn", label: "Đã quá hạn" },
+					]}
+					value={filterStatus}
+					onChange={(v) => {
+						setFilterStatus(Array.isArray(v) ? v : v ? [v] : []);
+						setPagination({ current: 1, pageSize: pagination.pageSize });
+					}}
+					maxTagCount={0}
+					maxTagPlaceholder={() => "Trạng thái"}
+				/>
+				<Select
+					allowClear
+					mode="multiple"
+					placeholder="Loại giảm giá"
+					style={{ width: 160 }}
+					options={[
+						{ value: "fixed", label: "fixed" },
+						{ value: "percent", label: "percent" },
+					]}
+					value={filterType}
+					onChange={(v) => {
+						setFilterType(Array.isArray(v) ? v : v ? [v] : []);
+						setPagination({ current: 1, pageSize: pagination.pageSize });
+					}}
+					maxTagCount={0}
+					maxTagPlaceholder={() => "Loại"}
+				/>
+				<DatePicker.RangePicker
+					allowClear
+					style={{ width: 240 }}
+					value={filterStartDateRange}
+					onChange={(v) => {
+						setFilterStartDateRange(v);
+						setPagination({ current: 1, pageSize: pagination.pageSize });
+					}}
+					format="DD/MM/YYYY"
+					placeholder={["Bắt đầu từ", "Bắt đầu đến"]}
+				/>
+				<DatePicker.RangePicker
+					allowClear
+					style={{ width: 240 }}
+					value={filterEndDateRange}
+					onChange={(v) => {
+						setFilterEndDateRange(v);
+						setPagination({ current: 1, pageSize: pagination.pageSize });
+					}}
+					format="DD/MM/YYYY"
+					placeholder={["Kết thúc từ", "Kết thúc đến"]}
+				/>
+				<Button onClick={resetFilters}>Đặt lại</Button>
 			</div>
 
 			<Card>

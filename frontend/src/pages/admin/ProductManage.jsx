@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import {
 	Button,
 	Card,
+	DatePicker,
 	Form,
 	Input,
 	InputNumber,
@@ -47,6 +48,12 @@ export default function ProductManage() {
 	const [imagePreview, setImagePreview] = useState(null);
 	const [pagination, setPagination] = useState({ current: 1, pageSize: 8 });
 	const [query, setQuery] = useState("");
+	const [filterCategory, setFilterCategory] = useState([]);
+	const [filterBrand, setFilterBrand] = useState([]);
+	const [filterStatus, setFilterStatus] = useState([]);
+	const [filterStock, setFilterStock] = useState([]);
+	const [filterPriceRange, setFilterPriceRange] = useState([]); // array of 'min-max' string
+	const [filterDateRange, setFilterDateRange] = useState(undefined);
 	const { brands, categories, items, loading, error, save, remove, DEFAULT_PRODUCT_IMAGE, LEGACY_PLACEHOLDERS } =
 		useAdminProducts();
 
@@ -63,7 +70,7 @@ export default function ProductManage() {
 		});
 
 	const brandOptions = useMemo(
-		() => (Array.isArray(brands) ? brands : []).map((b) => ({ value: b.id, label: b.name })),
+		() => (Array.isArray(brands) ? brands : []).map((b) => ({ value: String(b.id), label: b.name })),
 		[brands]
 	);
 	const brandLabelById = useMemo(() => {
@@ -72,7 +79,7 @@ export default function ProductManage() {
 		return map;
 	}, [brands]);
 	const categoryOptions = useMemo(
-		() => (Array.isArray(categories) ? categories : []).map((c) => ({ value: c.id, label: c.name })),
+		() => (Array.isArray(categories) ? categories : []).map((c) => ({ value: String(c.id), label: c.name })),
 		[categories]
 	);
 	const categoryLabelById = useMemo(() => {
@@ -89,17 +96,50 @@ export default function ProductManage() {
 	}, [items]);
 
 	const filtered = useMemo(() => {
-		const list = Array.isArray(items) ? items : [];
+		let list = Array.isArray(items) ? items : [];
 		const q = String(query || "").trim().toLowerCase();
-		if (!q) return list;
-		return list.filter((it) => {
-			return (
+		if (q) {
+			list = list.filter((it) =>
 				String(it?.name || "").toLowerCase().includes(q) ||
 				String(it?.code || "").toLowerCase().includes(q) ||
 				String(it?.id || "").toLowerCase().includes(q)
 			);
-		});
-	}, [items, query]);
+		}
+		if (Array.isArray(filterCategory) && filterCategory.length > 0) {
+			list = list.filter((it) => filterCategory.includes(String(it?.categoryId)));
+		}
+		if (Array.isArray(filterBrand) && filterBrand.length > 0) {
+			list = list.filter((it) => filterBrand.includes(String(it?.brandId)));
+		}
+		if (Array.isArray(filterStatus) && filterStatus.length > 0) {
+			list = list.filter((it) => filterStatus.includes(normalizeStockStatusLabel(it?.status)));
+		}
+		if (Array.isArray(filterStock) && filterStock.length > 0) {
+			const hasIn = filterStock.includes("in");
+			const hasOut = filterStock.includes("out");
+			if (hasIn && !hasOut) list = list.filter((it) => Number(it?.stock) > 0);
+			if (hasOut && !hasIn) list = list.filter((it) => Number(it?.stock) <= 0);
+		}
+		if (Array.isArray(filterPriceRange) && filterPriceRange.length > 0) {
+			list = list.filter((it) => {
+				const price = Number(it?.price) || 0;
+				return filterPriceRange.some((range) => {
+					const [min, max] = range.split('-').map(Number);
+					return price >= min && price <= max;
+				});
+			});
+		}
+		if (filterDateRange && Array.isArray(filterDateRange) && filterDateRange[0] && filterDateRange[1]) {
+			const [start, end] = filterDateRange;
+			const dayjs = require("dayjs");
+			list = list.filter((it) => {
+				if (!it?.createdAt) return false;
+				const d = dayjs(it.createdAt);
+				return d.isSame(start, "day") || d.isSame(end, "day") || (d.isAfter(start, "day") && d.isBefore(end, "day"));
+			});
+		}
+		return list;
+	}, [items, query, filterCategory, filterBrand, filterStatus, filterStock, filterPriceRange, filterDateRange]);
 
 	const openCreate = () => {
 		setEditing(null);
@@ -241,11 +281,11 @@ export default function ProductManage() {
 
 	return (
 		<div className="space-y-4">
-			<div className="flex items-center justify-between">
+			<div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
 				<Title level={4} style={{ margin: 0 }}>
 					Quản lý sản phẩm
 				</Title>
-				<Space>
+				<Space wrap>
 					<Input.Search
 						placeholder="Tìm theo tên hoặc SKU"
 						allowClear
@@ -257,13 +297,15 @@ export default function ProductManage() {
 							setQuery(e.target.value);
 							setPagination({ current: 1, pageSize: pagination.pageSize });
 						}}
-						style={{ width: 320 }}
+						style={{ width: 180 }}
 					/>
 					<Button type="primary" onClick={openCreate}>
 						Thêm sản phẩm
 					</Button>
 				</Space>
 			</div>
+
+			
 
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 				<Card>
@@ -276,6 +318,114 @@ export default function ProductManage() {
 					<Statistic title="Hết hàng" value={stats.outOfStock} />
 				</Card>
 			</div>
+
+			
+			<div className="flex flex-wrap gap-2 mb-2 mt-2 justify-end">
+				   <Select
+					   allowClear
+					   mode="multiple"
+					   placeholder="Danh mục"
+					   style={{ width: 160 }}
+					   options={categoryOptions}
+					   value={filterCategory.map(String)}
+					   onChange={(v) => {
+						   setFilterCategory(Array.isArray(v) ? v.map(String) : v ? [String(v)] : []);
+						   setPagination({ current: 1, pageSize: pagination.pageSize });
+					   }}
+					   maxTagCount={0}
+					   maxTagPlaceholder={() => "Danh mục"}
+				   />
+				   <Select
+					   allowClear
+					   mode="multiple"
+					   placeholder="Thương hiệu"
+					   style={{ width: 160 }}
+					   options={brandOptions}
+					   value={filterBrand.map(String)}
+					   onChange={(v) => {
+						   setFilterBrand(Array.isArray(v) ? v.map(String) : v ? [String(v)] : []);
+						   setPagination({ current: 1, pageSize: pagination.pageSize });
+					   }}
+					   maxTagCount={0}
+					   maxTagPlaceholder={() => "Thương hiệu"}
+				   />
+					<Select
+						allowClear
+						mode="multiple"
+						placeholder="Khoảng giá"
+						style={{ width: 200 }}
+						options={[
+							{ value: '0-200000000', label: '0 - 200 triệu' },
+							{ value: '200000000-400000000', label: '200 - 400 triệu' },
+							{ value: '400000000-600000000', label: '400 - 600 triệu' },
+							{ value: '600000000-800000000', label: '600 - 800 triệu' },
+							{ value: '800000000-1000000000', label: '800 triệu - 1 tỷ' },
+						]}
+						value={filterPriceRange}
+						onChange={(v) => {
+							setFilterPriceRange(Array.isArray(v) ? v : v ? [v] : []);
+							setPagination({ current: 1, pageSize: pagination.pageSize });
+						}}
+						maxTagCount={0}
+						maxTagPlaceholder={() => "Khoảng giá"}
+					/>
+				<Select
+					allowClear
+					mode="multiple"
+					placeholder="Trạng thái"
+					style={{ width: 160 }}
+					options={[
+						{ value: "Hoạt động", label: "Hoạt động" },
+						{ value: "Ngừng hoạt động", label: "Ngừng hoạt động" },
+					]}
+					value={filterStatus}
+					onChange={(v) => {
+						setFilterStatus(Array.isArray(v) ? v : v ? [v] : []);
+						setPagination({ current: 1, pageSize: pagination.pageSize });
+					}}
+					maxTagCount={0}
+					maxTagPlaceholder={() => "Trạng thái"}
+				/>
+				<Select
+					allowClear
+					mode="multiple"
+					placeholder="Kho hàng"
+					style={{ width: 140 }}
+					options={[
+						{ value: "in", label: "Còn hàng" },
+						{ value: "out", label: "Hết hàng" },
+					]}
+					value={filterStock}
+					onChange={(v) => {
+						setFilterStock(Array.isArray(v) ? v : v ? [v] : []);
+						setPagination({ current: 1, pageSize: pagination.pageSize });
+					}}
+					maxTagCount={0}
+					maxTagPlaceholder={() => "Kho"}
+				/>
+				<DatePicker.RangePicker
+					allowClear
+					style={{ width: 260 }}
+					value={filterDateRange}
+					onChange={(v) => {
+						setFilterDateRange(v);
+						setPagination({ current: 1, pageSize: pagination.pageSize });
+					}}
+					format="DD/MM/YYYY"
+					placeholder={["Tạo từ ngày", "Tạo đến ngày"]}
+				/>
+				<Button onClick={() => {
+					setQuery("");
+					setFilterCategory([]);
+					setFilterBrand([]);
+					setFilterStatus([]);
+					setFilterStock([]);
+					setFilterPriceRange([]);
+					setFilterDateRange(undefined);
+					setPagination({ current: 1, pageSize: pagination.pageSize });
+				}}>Đặt lại</Button>
+			</div>
+
 
 			<Card>
 				<Table
@@ -366,7 +516,7 @@ export default function ProductManage() {
 					<Form.Item name="stock" label="Tồn kho" rules={[{ required: true }]}>
 						<InputNumber className="w-full" min={0} />
 					</Form.Item>
-					   {/* Đã bán: chỉ hiển thị ở bảng, không cho nhập/sửa trong form */}
+					   
 					<Form.Item name="status" label="Trạng thái" rules={[{ required: true }]}>
 						<Select
 							options={[

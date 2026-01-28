@@ -1,4 +1,6 @@
 import React, { useMemo, useState } from "react";
+import dayjs from "dayjs";
+import { DatePicker } from "antd";
 import {
 	Button,
 	Card,
@@ -34,6 +36,12 @@ export default function OrderManagePage() {
 	const [editing, setEditing] = useState(null);
 	const [pagination, setPagination] = useState({ current: 1, pageSize: 8 });
 	const [query, setQuery] = useState("");
+	const [filterStatus, setFilterStatus] = useState([]);
+	const [filterPayment, setFilterPayment] = useState([]);
+	const [filterCustomer, setFilterCustomer] = useState([]);
+	const [filterTotalRange, setFilterTotalRange] = useState([]); // array of 'min-max' string
+	const [filterDateRange, setFilterDateRange] = useState(null); // [start, end] cho createdAt
+	const [filterEndDateRange, setFilterEndDateRange] = useState(null); // [start, end] cho endAt
 	const { customers, products, items, detailsByOrderId, loading, error, loadDetails, save, remove } = useAdminOrders();
 	const watchedItems = Form.useWatch("items", form);
 	const watchedDiscount = Form.useWatch("discount", form);
@@ -44,7 +52,7 @@ export default function OrderManagePage() {
 	}, [error]);
 
 	const customerOptions = useMemo(
-		() => (Array.isArray(customers) ? customers : []).map((c) => ({ value: c.id, label: `${c.name} (${c.email})` })),
+		() => (Array.isArray(customers) ? customers : []).map((c) => ({ value: String(c.id), label: `${c.name} (${c.email})` })),
 		[customers]
 	);
 	const customerLabelById = useMemo(() => {
@@ -97,6 +105,16 @@ export default function OrderManagePage() {
 		setOpen(true);
 	};
 
+	const resetFilters = () => {
+		setQuery("");
+		setFilterStatus([]);
+		setFilterPayment([]);
+		setFilterCustomer([]);
+		setFilterDateRange(null);
+		setFilterEndDateRange(null);
+		setPagination({ current: 1, pageSize: pagination.pageSize });
+	};
+
 	const openEdit = async (record) => {
 		setEditing(record);
 		try {
@@ -110,7 +128,7 @@ export default function OrderManagePage() {
 			const recordDiscount = Number(record?.discount);
 			const initialDiscount = Number.isFinite(recordDiscount) ? recordDiscount : derivedDiscount;
 			form.setFieldsValue({
-				customerId: record?.userId,
+				userId: record?.userId,
 				status: record?.status,
 				paymentMethod: record?.paymentMethod,
 				discount: initialDiscount,
@@ -218,28 +236,61 @@ export default function OrderManagePage() {
 	];
 
 	const filtered = useMemo(() => {
-		const list = Array.isArray(items) ? items : [];
+		let list = Array.isArray(items) ? items : [];
 		const q = String(query || "").trim().toLowerCase();
-		if (!q) return list;
-		return list.filter((it) => {
-			return (
+		if (q) {
+			list = list.filter((it) =>
 				String(it?.code || "").toLowerCase().includes(q) ||
 				String(it?.userId || "").toLowerCase().includes(q) ||
 				String(it?.id || "").toLowerCase().includes(q)
 			);
-		});
-	}, [items, query]);
+		}
+		if (Array.isArray(filterStatus) && filterStatus.length > 0) {
+			list = list.filter((it) => filterStatus.includes(String(it?.status)));
+		}
+		if (Array.isArray(filterPayment) && filterPayment.length > 0) {
+			list = list.filter((it) => filterPayment.includes(String(it?.paymentMethod)));
+		}
+		if (Array.isArray(filterCustomer) && filterCustomer.length > 0) {
+			list = list.filter((it) => filterCustomer.includes(String(it?.userId)));
+		}
+		if (Array.isArray(filterTotalRange) && filterTotalRange.length > 0) {
+			list = list.filter((it) => {
+				const total = Number(it?.finalPrice) || 0;
+				return filterTotalRange.some((range) => {
+					const [min, max] = range.split('-').map(Number);
+					return total >= min && total <= max;
+				});
+			});
+		}
+		if (filterDateRange && Array.isArray(filterDateRange) && filterDateRange[0] && filterDateRange[1]) {
+			const [start, end] = filterDateRange;
+			list = list.filter((it) => {
+				const created = it?.createdAt ? dayjs(it.createdAt) : null;
+				return created && created.isAfter(dayjs(start).startOf('day').subtract(1, 'ms')) && created.isBefore(dayjs(end).endOf('day').add(1, 'ms'));
+			});
+		}
+		if (filterEndDateRange && Array.isArray(filterEndDateRange) && filterEndDateRange[0] && filterEndDateRange[1]) {
+			const [start, end] = filterEndDateRange;
+			list = list.filter((it) => {
+				const ended = it?.endAt ? dayjs(it.endAt) : null;
+				return ended && ended.isAfter(dayjs(start).startOf('day').subtract(1, 'ms')) && ended.isBefore(dayjs(end).endOf('day').add(1, 'ms'));
+			});
+		}
+		return list;
+	}, [items, query, filterStatus, filterPayment, filterCustomer, filterTotalRange, filterDateRange, filterEndDateRange]);
 
 	return (
 		<div className="space-y-4">
-			<div className="flex items-center justify-between">
+			<div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
 				<Title level={4} style={{ margin: 0 }}>
 					Quản lý đơn hàng
 				</Title>
-				<Space>
+				<Space wrap>
 					<Input.Search
 						placeholder="Tìm theo mã đơn hoặc id"
 						allowClear
+						value={query}
 						onSearch={(v) => {
 							setQuery(v);
 							setPagination({ current: 1, pageSize: pagination.pageSize });
@@ -248,7 +299,7 @@ export default function OrderManagePage() {
 							setQuery(e.target.value);
 							setPagination({ current: 1, pageSize: pagination.pageSize });
 						}}
-						style={{ width: 300 }}
+						style={{ width: 160 }}
 					/>
 					<Button type="primary" onClick={openCreate}>
 						Thêm đơn hàng
@@ -256,13 +307,122 @@ export default function OrderManagePage() {
 				</Space>
 			</div>
 
+
+
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-				   <Card variant="outlined">
-					<Statistic title="Tổng đơn" value={stats.total} />
-				</Card>
-				   <Card variant="outlined">
-					<Statistic title="Doanh thu (hoàn thành)" value={stats.revenue} formatter={(v) => formatVnd(v)} />
-				</Card>
+ 			   <Card variant="outlined">
+ 				<Statistic title="Tổng đơn" value={stats.total} />
+ 			   </Card>
+ 			   <Card variant="outlined">
+ 				<Statistic title="Doanh thu (hoàn thành)" value={stats.revenue} formatter={(v) => formatVnd(v)} />
+ 			   </Card>
+			</div>
+
+			
+			<div className="flex flex-wrap gap-2 mb-2 mt-2 justify-end">
+				
+					<Select
+						allowClear
+						mode="multiple"
+						placeholder="Trạng thái"
+						style={{ width: 140 }}
+						options={[
+							{ value: "CREATED", label: mapOrderStatusToVi("CREATED") },
+							{ value: "SHIPPING", label: mapOrderStatusToVi("SHIPPING") },
+							{ value: "COMPLETED", label: mapOrderStatusToVi("COMPLETED") },
+							{ value: "CANCELED", label: mapOrderStatusToVi("CANCELED") },
+						]}
+						value={filterStatus}
+						onChange={(v) => {
+							setFilterStatus(Array.isArray(v) ? v : (v ? [v] : []));
+							setPagination({ current: 1, pageSize: pagination.pageSize });
+						}}
+						maxTagCount={0}
+						maxTagPlaceholder={() => "Trạng thái"}
+					/>
+
+					<Select
+						allowClear
+						mode="multiple"
+						placeholder="Tổng tiền"
+						style={{ width: 200 }}
+						options={[
+							{ value: '0-200000000', label: '0 - 200 triệu' },
+							{ value: '200000000-400000000', label: '200 - 400 triệu' },
+							{ value: '400000000-600000000', label: '400 - 600 triệu' },
+							{ value: '600000000-800000000', label: '600 - 800 triệu' },
+							{ value: '800000000-1000000000', label: '800 triệu - 1 tỷ' },
+							{ value: '1000000000-99999999999', label: 'Trên 1 tỷ' },
+						]}
+						value={filterTotalRange}
+						onChange={(v) => {
+							setFilterTotalRange(Array.isArray(v) ? v : v ? [v] : []);
+							setPagination({ current: 1, pageSize: pagination.pageSize });
+						}}
+						maxTagCount={0}
+						maxTagPlaceholder={() => "Tổng tiền"}
+					/>
+				
+				<Select
+					allowClear
+					mode="multiple"
+					placeholder="Thanh toán"
+					style={{ width: 140 }}
+					options={[
+						{ value: "CASH", label: mapPaymentMethodToVi("CASH") },
+						{ value: "BANK_TRANSFER", label: mapPaymentMethodToVi("BANK_TRANSFER") },
+					]}
+					value={filterPayment}
+					onChange={(v) => {
+						setFilterPayment(Array.isArray(v) ? v : (v ? [v] : []));
+						setPagination({ current: 1, pageSize: pagination.pageSize });
+					}}
+					maxTagCount={0}
+					maxTagPlaceholder={() => "Thanh toán"}
+				/>
+				
+				<Select
+					allowClear
+					mode="multiple"
+					placeholder="Khách hàng"
+					style={{ width: 180 }}
+					options={customerOptions}
+					value={filterCustomer.map(String)}
+					onChange={(v) => {
+						setFilterCustomer(Array.isArray(v) ? v.map(String) : (v ? [String(v)] : []));
+						setPagination({ current: 1, pageSize: pagination.pageSize });
+					}}
+					showSearch
+					optionFilterProp="label"
+					maxTagCount={0}
+					maxTagPlaceholder={() => "Khách hàng"}
+				/>
+				
+				<DatePicker.RangePicker
+					allowClear
+					style={{ width: 240 }}
+					value={filterDateRange}
+					onChange={(v) => {
+						setFilterDateRange(v);
+						setPagination({ current: 1, pageSize: pagination.pageSize });
+					}}
+					format="DD/MM/YYYY"
+					placeholder={["Tạo từ ngày", "Tạo đến ngày"]}
+				/>
+				<DatePicker.RangePicker
+					allowClear
+					style={{ width: 240 }}
+					value={filterEndDateRange}
+					onChange={(v) => {
+						setFilterEndDateRange(v);
+						setPagination({ current: 1, pageSize: pagination.pageSize });
+					}}
+					format="DD/MM/YYYY"
+					placeholder={["Kết thúc từ ngày", "Kết thúc đến ngày"]}
+				/>
+				<Button onClick={resetFilters}>
+					Đặt lại
+				</Button>
 			</div>
 
 			   <Card variant="outlined">
@@ -301,7 +461,7 @@ export default function OrderManagePage() {
 								<Input value={editing?.code} disabled />
 							</Form.Item>
 						)}
-						<Form.Item name="customerId" label="Khách hàng" rules={[{ required: true }]}>
+						<Form.Item name="userId" label="Khách hàng" rules={[{ required: true }]}> 
 							<Select options={customerOptions} placeholder="Chọn khách hàng" />
 						</Form.Item>
 						<Form.Item name="status" label="Trạng thái" rules={[{ required: true }]}>

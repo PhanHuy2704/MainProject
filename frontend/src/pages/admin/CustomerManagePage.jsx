@@ -17,6 +17,7 @@ export default function CustomerManagePage() {
 	};
 	const [pagination, setPagination] = useState({ current: 1, pageSize: 8 });
 	const [query, setQuery] = useState("");
+	const [filterGender, setFilterGender] = useState(undefined);
 	const { items, loading, error, remove, update } = useAdminCustomers();
 
 	
@@ -108,26 +109,32 @@ export default function CustomerManagePage() {
 	];
 
 	const filtered = useMemo(() => {
-		const list = Array.isArray(items) ? items : [];
+		let list = Array.isArray(items) ? items : [];
 		const q = String(query || "").trim().toLowerCase();
-		if (!q) return list;
-		return list.filter((it) => {
-			return (
+		if (q) {
+			list = list.filter((it) =>
 				String(it?.name || "").toLowerCase().includes(q) ||
 				String(it?.email || "").toLowerCase().includes(q) ||
 				String(it?.phone || "").toLowerCase().includes(q) ||
 				String(it?.id || "").toLowerCase().includes(q)
 			);
-		});
-	}, [items, query]);
+		}
+		if (filterGender) {
+			list = list.filter((it) => {
+				const g = renderGender(it?.gender);
+				return g === filterGender;
+			});
+		}
+		return list;
+	}, [items, query, filterGender]);
 
 	return (
 		<div className="space-y-4">
-			<div className="flex items-center justify-between">
+			<div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
 				<Title level={4} style={{ margin: 0 }}>
 					Quản lý khách hàng
 				</Title>
-				<Space>
+				<Space wrap>
 					<Input.Search
 						placeholder="Tìm theo tên, email hoặc SĐT"
 						allowClear
@@ -139,7 +146,7 @@ export default function CustomerManagePage() {
 							setQuery(e.target.value);
 							setPagination({ current: 1, pageSize: pagination.pageSize });
 						}}
-						style={{ width: 320 }}
+						style={{ width: 180 }}
 					/>
 				</Space>
 			</div>

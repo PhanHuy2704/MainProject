@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Button, Card, Form, Input, Modal, Popconfirm, Select, Space, Statistic, Table, Typography, message, theme } from "antd";
+import { Button, Card, DatePicker, Form, Input, Modal, Popconfirm, Select, Space, Statistic, Table, Typography, message, theme } from "antd";
 
 import { useAdminBrands } from "../../hooks/admin/useAdminBrands";
 import { formatDateTimeVi } from "../../utils/formatters";
@@ -26,6 +26,8 @@ export default function BrandPage() {
 	const [editing, setEditing] = useState(null);
 	const [pagination, setPagination] = useState({ current: 1, pageSize: 8 });
 	const [query, setQuery] = useState("");
+	const [filterStatus, setFilterStatus] = useState([]);
+	const [filterDateRange, setFilterDateRange] = useState(undefined);
 	const { items, loading, save, remove } = useAdminBrands();
 
 	const stats = useMemo(() => {
@@ -41,6 +43,13 @@ export default function BrandPage() {
 		form.resetFields();
 		form.setFieldsValue({ status: "Hoạt động" });
 		setOpen(true);
+	};
+
+	const resetFilters = () => {
+		setQuery("");
+		setFilterStatus([]);
+		setFilterDateRange(undefined);
+		setPagination({ current: 1, pageSize: pagination.pageSize });
 	};
 
 	const openEdit = (record) => {
@@ -111,19 +120,32 @@ export default function BrandPage() {
 	}, [items]);
 
 	const filtered = useMemo(() => {
-		const list = Array.isArray(viewModels) ? viewModels : [];
+		let list = Array.isArray(viewModels) ? viewModels : [];
 		const q = String(query || "").trim().toLowerCase();
-		if (!q) return list;
-		return list.filter((it) => String(it?.name || "").toLowerCase().includes(q));
-	}, [viewModels, query]);
+		if (q) {
+			list = list.filter((it) => String(it?.name || "").toLowerCase().includes(q));
+		}
+		if (Array.isArray(filterStatus) && filterStatus.length > 0) {
+			list = list.filter((it) => filterStatus.includes(normalizeActiveLabel(it?.status)));
+		}
+		if (filterDateRange && Array.isArray(filterDateRange) && filterDateRange[0] && filterDateRange[1]) {
+			const [start, end] = filterDateRange;
+			list = list.filter((it) => {
+				if (!it?.createdAt) return false;
+				const d = require("dayjs")(it.createdAt);
+				return d.isSame(start, "day") || d.isSame(end, "day") || (d.isAfter(start, "day") && d.isBefore(end, "day"));
+			});
+		}
+		return list;
+	}, [viewModels, query, filterStatus, filterDateRange]);
 
 	return (
 		<div className="space-y-4">
-			<div className="flex items-center justify-between">
+			<div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
 				<Title level={4} style={{ margin: 0 }}>
 					Quản lý thương hiệu
 				</Title>
-				<Space>
+				<Space wrap>
 					<Input.Search
 						placeholder="Tìm theo tên hoặc id"
 						allowClear
@@ -135,7 +157,7 @@ export default function BrandPage() {
 							setQuery(e.target.value);
 							setPagination({ current: 1, pageSize: pagination.pageSize });
 						}}
-						style={{ width: 260 }}
+						style={{ width: 160 }}
 					/>
 					<Button type="primary" onClick={openCreate}>
 						Thêm thương hiệu
@@ -150,6 +172,39 @@ export default function BrandPage() {
 				<Card>
 					<Statistic title="Đang hoạt động" value={stats.active} />
 				</Card>
+			</div>
+
+			
+			<div className="flex flex-wrap gap-2 mb-2 mt-2 justify-end">
+				<Select
+					allowClear
+					mode="multiple"
+					placeholder="Trạng thái"
+					style={{ width: 160 }}
+					options={[
+						{ value: "Hoạt động", label: "Hoạt động" },
+						{ value: "Ngừng hoạt động", label: "Ngừng hoạt động" },
+					]}
+					value={filterStatus}
+					onChange={(v) => {
+						setFilterStatus(Array.isArray(v) ? v : v ? [v] : []);
+						setPagination({ current: 1, pageSize: pagination.pageSize });
+					}}
+					maxTagCount={0}
+					maxTagPlaceholder={() => "Trạng thái"}
+				/>
+				<DatePicker.RangePicker
+					allowClear
+					style={{ width: 260 }}
+					value={filterDateRange}
+					onChange={(v) => {
+						setFilterDateRange(v);
+						setPagination({ current: 1, pageSize: pagination.pageSize });
+					}}
+					format="DD/MM/YYYY"
+					placeholder={["Tạo từ ngày", "Tạo đến ngày"]}
+				/>
+				<Button onClick={resetFilters}>Đặt lại</Button>
 			</div>
 
 			<Card>
