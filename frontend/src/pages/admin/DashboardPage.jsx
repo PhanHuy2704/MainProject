@@ -126,11 +126,56 @@ export default function DashboardPage() {
 				label: p?.label,
 				value: Number(p?.value) || 0,
 			})),
+			topCategories: Array.isArray(data?.topCategories) ? data.topCategories : [],
+			topBrands: Array.isArray(data?.topBrands) ? data.topBrands : [],
+			topProducts: Array.isArray(data?.topProducts) ? data.topProducts : [],
+			topDiscounts: Array.isArray(data?.topDiscounts) ? data.topDiscounts : [],
+			topCustomers: Array.isArray(data?.topCustomers) ? data.topCustomers : [],
+			topLowStockProducts: Array.isArray(data?.topLowStockProducts) ? data.topLowStockProducts : [],
 		};
 	}, [report]);
 
 	const formatInt = (value) => formatIntVi(value);
 
+	const renderTopList = (items, title, quantityLabel = "Sản phẩm đã bán") => {
+		const rowHeight = 36; // px
+		const minRows = 3;
+		const displayItems = items.slice(0, minRows);
+		const emptyRows = minRows - displayItems.length;
+		return (
+			<Card bordered style={{ marginBottom: 0, minHeight: rowHeight * minRows + 60, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', position: 'relative' }} title={title}>
+				<table style={{ width: "100%", borderCollapse: "collapse", marginBottom: 0 }}>
+					<thead>
+						<tr>
+							<th style={{ textAlign: "left", padding: "4px 8px", fontWeight: 700, width: "60%" }}>Tên</th>
+							<th style={{ textAlign: "right", padding: "4px 8px", fontWeight: 700, width: "40%" }}>{quantityLabel}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{displayItems.map((item) => (
+							<tr key={item.name} style={{ height: rowHeight }}>
+								<td style={{ padding: "4px 8px", border: 0 }}>{item.name}</td>
+								<td style={{ padding: "4px 8px", textAlign: "right", border: 0 }}>{formatInt(item.soldQuantity)}</td>
+							</tr>
+						))}
+						{items.length === 0 && (
+							<tr>
+								<td colSpan={2} style={{ padding: "4px 8px", border: 0, color: token.colorTextSecondary, textAlign: 'center', height: rowHeight * minRows }}>
+									Chưa có dữ liệu
+								</td>
+							</tr>
+						)}
+						{emptyRows > 0 && items.length > 0 &&
+							[...Array(emptyRows)].map((_, idx) => (
+								<tr key={"empty-" + idx} style={{ height: rowHeight }}>
+									<td colSpan={2} style={{ padding: "4px 8px", border: 0 }}></td>
+								</tr>
+							))}
+					</tbody>
+				</table>
+			</Card>
+		);
+	};
 
 	return (
 		<div className="space-y-4">
@@ -172,9 +217,7 @@ export default function DashboardPage() {
 				</Col>
 			</Row>
 
-			
-
-			<Row gutter={[16, 16]} align="stretch">
+			<Row gutter={[16, 32]} align="stretch">
 				<Col xs={24} md={8} className="flex">
 					<Card bordered title="Doanh thu" style={{ width: "100%", height: "100%" }} loading={loading}>
 						<Space direction="vertical" size={12} style={{ width: "100%" }}>
@@ -196,6 +239,18 @@ export default function DashboardPage() {
 						</Space>
 					</Card>
 				</Col>
+			</Row>
+
+			<Row gutter={[16, 32]}>
+				<Col xs={24} md={8}>{renderTopList(dashboard.topCategories, "Danh mục bán chạy")}</Col>
+				<Col xs={24} md={8}>{renderTopList(dashboard.topBrands, "Thương hiệu bán chạy")}</Col>
+				<Col xs={24} md={8}>{renderTopList(dashboard.topProducts, "Sản phẩm bán chạy")}</Col>
+			</Row>
+
+			<Row gutter={[16, 32]}>
+				<Col xs={24} md={8}>{renderTopList(dashboard.topDiscounts, "Mã giảm giá sử dụng nhiều nhất", "Đã sử dụng")}</Col>
+				<Col xs={24} md={8}>{renderTopList(dashboard.topCustomers, "Khách hàng mua nhiều nhất", "Đơn hàng hoàn thành")}</Col>
+				<Col xs={24} md={8}>{renderTopList(dashboard.topLowStockProducts, "Sản phẩm tồn kho sắp hết", "Tồn kho")}</Col>
 			</Row>
 		</div>
 	);

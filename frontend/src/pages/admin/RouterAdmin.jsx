@@ -52,7 +52,7 @@ const NAV_ITEMS = [
 	{ path: "discounts", label: "Giảm giá", icon: <TagOutlined />, element: <DiscountPage /> },
 	{ path: "orders", label: "Đơn hàng", icon: <ShoppingCartOutlined />, element: <OrderManagePage /> },
 	{ path: "customers", label: "Khách hàng", icon: <UserOutlined />, element: <CustomerManagePage /> },
-	{ path: "settings", label: "Cài đặt", icon: <SettingOutlined />, element: <AdminSettingsPage /> },
+	// { path: "settings", label: "Cài đặt", icon: <SettingOutlined />, element: <AdminSettingsPage /> },
 ];
 
 //SIDEBAR
@@ -222,12 +222,12 @@ function AdminTopHeader() {
 	}, [location.pathname]);
 
 	const adminMenuItems = [
-		{
-			key: "settings",
-			icon: <SettingOutlined />,
-			label: "Cập nhật thông tin",
-			onClick: () => navigate("/admin/settings"),
-		},
+		// {
+		// 	key: "settings",
+		// 	icon: <SettingOutlined />,
+		// 	label: "Cập nhật thông tin",
+		// 	onClick: () => navigate("/admin/settings"),
+		// },
 		{
 			key: "logout",
 			icon: <LogoutOutlined />,

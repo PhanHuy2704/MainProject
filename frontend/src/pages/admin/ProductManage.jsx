@@ -52,7 +52,7 @@ export default function ProductManage() {
 	const [filterBrand, setFilterBrand] = useState([]);
 	const [filterStatus, setFilterStatus] = useState([]);
 	const [filterStock, setFilterStock] = useState([]);
-	const [filterPriceRange, setFilterPriceRange] = useState([]); // array of 'min-max' string
+	const [filterPriceRange, setFilterPriceRange] = useState([]); 
 	const [filterDateRange, setFilterDateRange] = useState(undefined);
 	const { brands, categories, items, loading, error, save, remove, DEFAULT_PRODUCT_IMAGE, LEGACY_PLACEHOLDERS } =
 		useAdminProducts();

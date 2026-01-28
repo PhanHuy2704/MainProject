@@ -17,6 +17,16 @@ public class ReportDTO {
 	private String periodTitle;
 	private ReportStatsDTO stats;
 	private List<ReportSeriesPointDTO> seriesRevenue;
+
+
+	private List<ReportTopItemDTO> topCategories;
+	private List<ReportTopItemDTO> topBrands;
+	private List<ReportTopItemDTO> topProducts;
 	private List<ReportSeriesPointDTO> seriesOrders;
 	private List<ReportSeriesPointDTO> seriesSoldItems;
+
+
+	private List<ReportTopItemDTO> topDiscounts;
+	private List<ReportTopItemDTO> topCustomers;
+	private List<ReportTopItemDTO> topLowStockProducts;
 }
