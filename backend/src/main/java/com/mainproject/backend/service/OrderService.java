@@ -93,7 +93,8 @@ public class OrderService {
 		BigDecimal subtotal = BigDecimal.ZERO;
 		List<OrderDetail> details = req.getItems().stream().map(item -> {
 			Long productId = item == null ? null : item.getProductId();
-			int quantity = item == null || item.getQuantity() == null ? 0 : item.getQuantity();
+			Integer quantityObj = item == null ? null : item.getQuantity();
+			int quantity = quantityObj == null ? 0 : quantityObj.intValue();
 			if (productId == null || quantity <= 0) {
 				throw new BadRequestException("Each item requires productId and quantity > 0");
 			}
@@ -187,6 +188,30 @@ public class OrderService {
 		if (order.getStatus() != Order.Status.CREATED && order.getStatus() != Order.Status.SHIPPING) {
 			throw new BadRequestException("Only orders before completion can be canceled");
 		}
+
+		
+		List<OrderDetail> details = orderDetailRepository.findByOrder_Id(order.getId());
+		for (OrderDetail d : details) {
+			Product p = d.getProduct();
+			p.setStock(p.getStock() + d.getQuantity());
+			p.setSoldQuantity(Math.max(0, p.getSoldQuantity() - d.getQuantity()));
+			
+			if (p.getStock() > 0 && p.getStatus() == Product.Status.OUT_OF_STOCK) {
+				p.setStatus(Product.Status.IN_STOCK);
+			}
+			productRepository.save(p);
+		}
+
+		
+		Discount discount = order.getDiscount();
+		if (discount != null) {
+			discount.setUsedQuantity(Math.max(0, discount.getUsedQuantity() - 1));
+			if (discount.getStatus() == Discount.Status.INACTIVE && discount.getUsedQuantity() < discount.getStock()) {
+				discount.setStatus(Discount.Status.ACTIVE);
+			}
+			discountRepository.save(discount);
+		}
+
 		order.setStatus(Order.Status.CANCELED);
 		order.setEndAt(null);
 		return toDTO(orderRepository.save(order));

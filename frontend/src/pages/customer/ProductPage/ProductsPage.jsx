@@ -62,6 +62,8 @@ const ProductsPage = () => {
   const [priceRange, setPriceRange] = useState([0, 1000000000]);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sortBy, setSortBy] = useState("featured");
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const PAGE_SIZE = 8;
   const [currentPage, setCurrentPage] = useState(1);
@@ -93,6 +95,13 @@ const ProductsPage = () => {
       filtered = filtered.filter((p) => searchInProduct(p, searchTerm));
     }
 
+    if (selectedBrands.length > 0) {
+      filtered = filtered.filter((p) => selectedBrands.includes(p.brand));
+    }
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter((p) => selectedCategories.includes(p.category));
+    }
+
     filtered = filtered.filter(
       (p) => (p.price ?? 0) >= priceRange[0] && (p.price ?? 0) <= priceRange[1]
     );
@@ -102,7 +111,7 @@ const ProductsPage = () => {
     }
 
     return filtered;
-  }, [products, searchInProduct, searchTerm, priceRange, inStockOnly]);
+  }, [products, searchInProduct, searchTerm, priceRange, inStockOnly, selectedBrands, selectedCategories]);
 
   const displayProducts = useMemo(() => {
     const sorted = [...filteredProducts];
@@ -142,14 +151,26 @@ const ProductsPage = () => {
     setPriceRange([0, 1000000000]);
     setInStockOnly(false);
     setSortBy("featured");
+    setSelectedBrands([]); 
+    setSelectedCategories([]); 
     setCurrentPage(1);
   };
 
   const applyFilters = () => {
-    // purely client-side; state updates already apply filters
+   
   };
 
   const { Search } = Input;
+
+  
+  const brandOptions = useMemo(() => {
+    const brandsSet = new Set(products.map((p) => p.brand).filter(Boolean));
+    return Array.from(brandsSet).map((b) => ({ value: b, label: b }));
+  }, [products]);
+  const categoryOptions = useMemo(() => {
+    const categoriesSet = new Set(products.map((p) => p.category).filter(Boolean));
+    return Array.from(categoriesSet).map((c) => ({ value: c, label: getCategoryLabel(c) }));
+  }, [products]);
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -205,6 +226,43 @@ const ProductsPage = () => {
                 <div className="mt-2 text-xs text-gray-500">
                   Tìm theo tên sản phẩm, danh mục hoặc thương hiệu
                 </div>
+              </div>
+
+              <Divider />
+
+              <div className="mb-4">
+                <Text strong>Thương hiệu</Text>
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{ width: '100%', marginTop: 8 }}
+                  placeholder="Chọn thương hiệu"
+                  options={brandOptions}
+                  value={selectedBrands}
+                  onChange={(v) => {
+                    setSelectedBrands(Array.isArray(v) ? v : v ? [v] : []);
+                    setCurrentPage(1);
+                  }}
+                  maxTagCount={0}
+                  maxTagPlaceholder={() => "Thương hiệu"}
+                />
+              </div>
+              <div className="mb-4">
+                <Text strong>Danh mục</Text>
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{ width: '100%', marginTop: 8 }}
+                  placeholder="Chọn danh mục"
+                  options={categoryOptions}
+                  value={selectedCategories}
+                  onChange={(v) => {
+                    setSelectedCategories(Array.isArray(v) ? v : v ? [v] : []);
+                    setCurrentPage(1);
+                  }}
+                  maxTagCount={0}
+                  maxTagPlaceholder={() => "Danh mục"}
+                />
               </div>
 
               <Divider />

@@ -46,7 +46,7 @@ export default function ProductManage() {
 	const [open, setOpen] = useState(false);
 	const [editing, setEditing] = useState(null);
 	const [imagePreview, setImagePreview] = useState(null);
-	const [pagination, setPagination] = useState({ current: 1, pageSize: 8 });
+	const [pagination, setPagination] = useState({ current: 1, pageSize: 5 });
 	const [query, setQuery] = useState("");
 	const [filterCategory, setFilterCategory] = useState([]);
 	const [filterBrand, setFilterBrand] = useState([]);
