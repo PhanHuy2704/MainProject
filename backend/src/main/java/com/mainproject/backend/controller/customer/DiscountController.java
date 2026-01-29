@@ -1,5 +1,7 @@
 package com.mainproject.backend.controller.customer;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DiscountController {
 	private final DiscountService discountService;
+
+	@GetMapping
+	public List<DiscountDTO> getAll() {
+		return discountService.getAll();
+	}
 
 	@GetMapping("/code/{code}")
 	public DiscountDTO getValidByCode(@PathVariable String code) {
